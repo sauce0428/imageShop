@@ -1,5 +1,13 @@
 package com.project.mapper;
 
-public interface CodeGroupMapper {
+import java.util.List;
 
+import com.project.domain.CodeGroup;
+
+public interface CodeGroupMapper {
+	// 등록 처리 
+	public int create(CodeGroup codeGroup) throws Exception; 
+	
+	// 목록 페이지 
+	public List<CodeGroup> list() throws Exception; 
 }

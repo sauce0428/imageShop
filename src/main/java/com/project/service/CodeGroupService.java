@@ -1,5 +1,13 @@
 package com.project.service;
 
-public interface CodeGroupService {
+import java.util.List;
 
+import com.project.domain.CodeGroup;
+
+public interface CodeGroupService {
+	//코드그룹등록처리요청 추상메소드 
+	public int register(CodeGroup codeGroup) throws Exception; 
+
+	//코드그룹 목록페이지요청 
+	public List<CodeGroup> list() throws Exception;
 }
