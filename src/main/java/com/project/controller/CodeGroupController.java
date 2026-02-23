@@ -48,4 +48,41 @@ public class CodeGroupController {
 		model.addAttribute("list", service.list());
 	}
 
+	// 코드그룹 상세 페이지 요청
+	@GetMapping("/read")
+	public void read(CodeGroup codeGroup, Model model) throws Exception {
+		model.addAttribute(service.read(codeGroup));
+	}
+
+	// 코드그룹 삭제 처리 요청
+	@GetMapping("/remove")
+	public String remove(CodeGroup codeGroup, RedirectAttributes rttr) throws Exception {
+		int count = service.remove(codeGroup);
+
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "SUCCESS");
+		} else {
+			rttr.addFlashAttribute("msg", "FAIL");
+		}
+		return "redirect:/codegroup/list";
+	}
+
+	// 코드그룹 수정 페이지 요청
+	@GetMapping("/modify")
+	public void modifyForm(CodeGroup codeGroup, Model model) throws Exception {
+		model.addAttribute(service.read(codeGroup));
+	}
+
+	// 코드그룹 수정 페이지 요청
+	@PostMapping("/modify")
+	public String modify(CodeGroup codeGroup, RedirectAttributes rttr) throws Exception {
+		int count = service.modify(codeGroup); 
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "SUCCESS");
+		} else {
+			rttr.addFlashAttribute("msg", "FAIL");
+		}
+		return "redirect:/codegroup/list";
+	}
+
 }
