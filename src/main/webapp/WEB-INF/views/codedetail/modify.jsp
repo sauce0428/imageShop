@@ -36,18 +36,15 @@
 				</tr>
 				<tr>
 					<td><spring:message code="codedetail.codeName" /></td>
-					<td><form:input path="codeName" readonly="true"/></td>
+					<td><form:input path="codeName" /></td>
 					<td><font color="red"><form:errors path="codeName" /></font></td>
 				</tr>
 			</table>
 		</form:form>
 
 		<div>
-			<button type="submit" id="btnEdit">
-				<spring:message code="action.edit" />
-			</button>
-			<button type="submit" id="btnRemove">
-				<spring:message code="action.remove" />
+			<button type="submit" id="btnModify">
+				<spring:message code="action.modify" />
 			</button>
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
@@ -60,14 +57,9 @@
 	<script>
 		$(document).ready(function() {
 			let formObj = $("#codeDetail");
-			$("#btnEdit").on("click", function() {
+			$("#btnModify").on("click", function() {
 				formObj.attr("action","/codedetail/modify")
-				formObj.attr("method","get")
-				formObj.submit();
-			});
-			$("#btnRemove").on("click", function() {
-				formObj.attr("action","/codedetail/remove")
-				formObj.attr("method","get")
+				formObj.attr("method","post")
 				formObj.submit();
 			});
 			$("#btnList").on("click", function() {

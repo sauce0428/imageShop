@@ -18,8 +18,8 @@ public interface CodeDetailMapper {
 	public CodeDetail read(CodeDetail codeDetail) throws Exception;
 	
 	// 삭제 처리 
-	
+	public int delete(CodeDetail codeDetail) throws Exception;
 	
 	// 수정 처리 
-	
+	public int update(CodeDetail codeDetail) throws Exception;
 }

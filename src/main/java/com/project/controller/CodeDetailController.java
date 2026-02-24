@@ -69,4 +69,36 @@ public class CodeDetailController {
 		List<CodeLabelValue> groupCodeList = codeService.getCodeGroupList();
 		model.addAttribute("groupCodeList", groupCodeList);
 	}
+
+	// 삭제 처리
+	@GetMapping("/remove")
+	public String remove(CodeDetail codeDetail, RedirectAttributes rttr) throws Exception {
+		int count = codeDetailService.remove(codeDetail);
+
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "SUCCESS");
+		} else {
+			rttr.addFlashAttribute("msg", "FAIL");
+		}
+		return "redirect:/codedetail/list";
+	}
+
+	// 수정 페이지
+	@GetMapping("/modify")
+	public void modifyForm(CodeDetail codeDetail, Model model) throws Exception {
+		model.addAttribute(codeDetailService.read(codeDetail));
+		// 그룹코드 목록을 조회하여 뷰에 전달
+		List<CodeLabelValue> groupCodeList = codeService.getCodeGroupList();
+		model.addAttribute("groupCodeList", groupCodeList);
+	}
+
+	// 수정 처리
+	@PostMapping("/modify")
+	public String modify(CodeDetail codeDetail, RedirectAttributes rttr) throws Exception {
+		int count = codeDetailService.modify(codeDetail);
+		
+		String message = (count != 0) ? "SUCCESS" : "FAIL";
+			rttr.addFlashAttribute("msg", message);
+		return "redirect:/codedetail/list";
+	}
 }

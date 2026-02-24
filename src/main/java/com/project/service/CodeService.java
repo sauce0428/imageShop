@@ -8,6 +8,9 @@ public interface CodeService {
 	// 그룹코드 목록 조회 
 	public List<CodeLabelValue> getCodeGroupList() throws Exception;
 
+	// 지정된 그룹코드에 해당하는 코드 목록 조회 
+	public List<CodeLabelValue> getCodeList(String groupCode) throws Exception;
+
 	//코드라벨등록처리요청 추상메소드 
 	
 	
