@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -51,9 +52,11 @@
 			<button type="submit" id="btnRegister">
 				<spring:message code="action.register" />
 			</button>
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
 			</button>
+			</sec:authorize>
 		</div>
 	</div>
 
