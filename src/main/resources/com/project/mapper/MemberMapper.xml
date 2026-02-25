@@ -51,11 +51,14 @@
 	</select>
 
 	<!-- 삭제 처리 -->
-
+	<delete id="remove">
+		DELETE FROM member WHERE user_no = #{userNo}
+	</delete>
 
 	<!-- 권한 수정 -->
 	<insert id="modifyAuth">
-		INSERT INTO member_auth(user_no, auth) VALUES(#{userNo}, #{auth})
+		INSERT INTO member_auth(user_no, auth)
+		VALUES(#{userNo}, #{auth})
 	</insert>
 
 	<!-- 권한 삭제 -->
@@ -65,7 +68,8 @@
 
 	<!-- 수정 처리 -->
 	<update id="modify">
-		UPDATE member SET user_name =#{userName}, job =#{job} WHERE user_no = #{userNo}
+		UPDATE member SET user_name =#{userName}, job =#{job}
+		WHERE user_no = #{userNo}
 	</update>
 
 </mapper>
