@@ -1,5 +1,7 @@
 package com.project.controller;
 
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/auth")
 @Controller
 @Slf4j
+@EnableWebSecurity
+@EnableMethodSecurity
 public class LoginController {
 	
 	// 에러 메시지와 로그아웃 메시지를 파라미터로 사용한다. 
@@ -26,10 +30,10 @@ public class LoginController {
 	return "auth/loginForm"; 
 	}
 	
-	@RequestMapping("/logout") 
+	@GetMapping("/logout") 
 	public String logoutForm() { 
 	log.info("logoutForm"); 
-	return "logoutForm"; 
+	return "auth/logoutForm"; 
 	}
 	
 }

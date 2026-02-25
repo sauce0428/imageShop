@@ -21,10 +21,11 @@ import com.project.common.security.CustomAccessDeniedHandler;
 import com.project.common.security.CustomLoginSuccessHandler;
 import com.project.common.security.CustomUserDetailsService;
 
+import jakarta.servlet.DispatcherType;
+
 //import com.zeus.common.security.CustomAccessDeniedHandler;
 //import com.zeus.common.security.CustomLoginSuccessHandler;
 
-import jakarta.servlet.DispatcherType;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
@@ -46,9 +47,9 @@ public class SecurityConfig {
 		// 2.시큐리티 인가정책
 		httpSecurity.authorizeHttpRequests(auth -> auth.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 				.requestMatchers("/accessError", "/login", "/css/", "/js/", "/error").permitAll()
-				.requestMatchers("/board/**").authenticated() // 게시판 인증: 로그인
-				.requestMatchers("/manager/**").hasRole("MANAGER") // 게시판 인가: 매니저
-				.requestMatchers("/admin/**").hasRole("ADMIN") // 게시판 인가: 관리자
+				//.requestMatchers("/board/**").authenticated() // 게시판 인증: 로그인
+				//.requestMatchers("/manager/**").hasRole("MANAGER") // 게시판 인가: 매니저
+				//.requestMatchers("/admin/**").hasRole("ADMIN") // 게시판 인가: 관리자
 				// .requestMatchers("/notice/list").permitAll() // 공지사항 목록: 누구나
 				// .requestMatchers("/notice/register").hasRole("ADMIN") // 공지사항 등록: 관리자만
 				.anyRequest().permitAll() // 그 외 모든 요청은 인증 필요없음
@@ -64,13 +65,14 @@ public class SecurityConfig {
 		httpSecurity.formLogin(form -> form.loginPage("/auth/login").loginProcessingUrl("/login")
 				// .defaultSuccessUrl("/board/list")
 				.successHandler(createAuthenticationSuccessHandler()).permitAll());
-		/*
-		 * // 5. 로그아웃 설정 수정 httpSecurity.logout(logout -> logout .logoutUrl("/logout")
-		 * // 로그아웃을 처리할 URL (기본값: /logout) .logoutSuccessUrl("/login?logout") // 로그아웃 성공
-		 * 시 이동할 페이지 .invalidateHttpSession(true) // HTTP 세션 무효화 (기본값: true)
-		 * .deleteCookies("JSESSIONID", "remember-me") // 로그아웃 시 관련 쿠키 삭제 .permitAll()
-		 * // 로그아웃 요청은 누구나 접근 가능해야 함 );
-		 */
+		
+		// 5. 로그아웃 설정 수정
+		httpSecurity.logout(logout -> logout.logoutUrl("/auth/logout") // 로그아웃을 처리할 URL (기본값: /logout)
+		.logoutSuccessUrl("/auth/login") // 로그아웃 성공시 이동할 페이지
+		.invalidateHttpSession(true) // HTTP 세션 무효화 (기본값: true)
+		.deleteCookies("JSESSIONID", "remember-me") // 로그아웃 시 관련 쿠키 삭제
+		.permitAll()); // 로그아웃 요청은 누구나 접근 가능해야 함 );
+		
 
 		// 6. 자동로그인기능 설정
 		// 데이터 소스를 지정하고 테이블을 이용해서 기존 로그인 정보를 기록
