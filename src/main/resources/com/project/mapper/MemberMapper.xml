@@ -61,6 +61,14 @@
 		VALUES(#{userNo}, #{auth})
 	</insert>
 
+	<!-- 상세 조회 -->
+	<select id="readByUserId" resultMap="memberMap">
+		SELECT M.user_no, user_id,
+		user_pw, user_name, job, coin, reg_date, upd_date, A.user_no, A.auth
+		FROM member M LEFT OUTER JOIN member_auth A ON M.user_no = A.user_no
+		WHERE M.user_id = #{userId}
+	</select>
+
 	<!-- 권한 삭제 -->
 	<insert id="deleteAuth">
 		DELETE FROM member_auth WHERE user_no = #{userNo}
