@@ -16,7 +16,7 @@
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
-	<div align="center">
+	<div class="codeDetail_modify"  align="center">
 		<h2>
 			<spring:message code="codegroup.header.read" />
 		</h2>

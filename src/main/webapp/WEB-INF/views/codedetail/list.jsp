@@ -10,14 +10,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Image Shop</title>
-<link rel="stylesheet" href="/css/codegroup.css">
+<link rel="stylesheet" href="/css/codeDetail.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 	<!-- 메인화면 작업시작 -->
-	<div align="center">
+	<div class="codeDetail_list" align="center">
 		<h2>
 			<spring:message code="codedetail.header.list" />
 		</h2>

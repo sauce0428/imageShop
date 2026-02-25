@@ -17,12 +17,12 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 	<!-- 메인화면 작업시작 -->
-	<div align="center">
+	<div class="codegroup_list" align="center">
 		<h2>
 			<spring:message code="codegroup.header.list" />
 		</h2>
 		<a href="/codegroup/register"><spring:message code="action.new" /></a>
-		<table border="1">
+		<table border="0">
 			<tr>
 				<th align="center" width="160"><spring:message
 						code="codegroup.groupCode" /></th>
@@ -65,5 +65,26 @@
 			alert("삭제처리 실패");
 		}
 	</script>
+<script>
+    const starsCount = 300;
+    for (let i = 0; i < starsCount; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        
+        // 브라우저 크기에 상관없이 0~100% 사이 랜덤 위치
+        star.style.top = Math.random() * 100 + "vh";
+        star.style.left = Math.random() * 100 + "vw";
+        
+        const size = (Math.random() * 2 + 1) + "px";
+        star.style.width = size;
+        star.style.height = size;
+
+        // 애니메이션 시간 설정
+        star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        star.style.animationDelay = Math.random() * 5 + "s";
+        
+        document.body.appendChild(star);
+    }
+</script>
 </body>
 </html>

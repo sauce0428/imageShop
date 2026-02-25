@@ -1,6 +1,131 @@
-@charset "UTF-8";
+/* 컨테이너 공통 스타일 */
+.codegroup_list, .codegroup_modify, .codegroup_read, .codegroup_register {
+    margin: 50px auto;
+    padding: 30px;
+    width: 80%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.05); /* 투명한 유리 효과 */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
 
-table td {
-	background-color: orange;
-	text-align: center;
+h2 {
+    color: #81d4fa;
+    text-shadow: 0 0 10px rgba(129, 212, 250, 0.5);
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* 테이블 스타일링 */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; /* 행 사이 간격 */
+    margin-bottom: 20px;
+}
+
+th {
+    background: rgba(129, 212, 250, 0.2);
+    color: #fff;
+    padding: 15px;
+    border: none !important;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+td {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border: none !important;
+    color: #ddd;
+    transition: all 0.3s ease;
+}
+
+tr:hover td {
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.01);
+}
+
+/* 입력 폼(Input) 스타일 */
+input[type="text"], input[readonly] {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(129, 212, 250, 0.3);
+    border-radius: 5px;
+    color: white;
+    outline: none;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #81d4fa;
+    box-shadow: 0 0 10px rgba(129, 212, 250, 0.3);
+}
+
+input[readonly] {
+    background: rgba(255, 255, 255, 0.05);
+    color: #888;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 버튼 스타일 (미래지향적 네온 버튼) */
+button, .codegroup_list a {
+    display: inline-block;
+    padding: 10px 25px;
+    margin: 5px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(45deg, #0288d1, #26c6da);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:hover, .codegroup_list a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(38, 198, 218, 0.6);
+    filter: brightness(1.1);
+}
+
+#btnRemove {
+    background: linear-gradient(45deg, #d32f2f, #ff5252);
+}
+
+/* 에러 메시지 */
+font[color="red"] {
+    font-size: 0.8rem;
+    color: #ff8a80 !important;
+    margin-left: 10px;
+}
+
+.star {
+    position: fixed;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation-name: twinkle;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    /* 추가: 기본값을 설정해두거나, 스크립트가 준 값을 확실히 받도록 합니다 */
+    animation-duration: inherit; 
+    z-index: -1; 
+    pointer-events: none;
+}
+
+@keyframes twinkle {
+    0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(1); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.5); 
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* 빛 번짐 추가 */
+    }
 }

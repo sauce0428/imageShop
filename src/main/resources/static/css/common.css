@@ -1,0 +1,65 @@
+/* 기본 배경 설정: 우주 느낌의 그라데이션 */
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    color: #ffffff;
+    font-family: 'Pretendard', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* 스크립트로 생성되는 별(star) 스타일 */
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle var(--duration) infinite ease-in-out;
+    z-index: -1; /* 콘텐츠 뒤로 보내기 */
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* 상단 헤더 & 메뉴 바 공통 스타일 */
+.header-bar, .menu-bar {
+    padding: 10px 5%;
+    background: rgba(255, 255, 255, 0.05); /* 반투명 유리 효과 */
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+a {
+    color: #81d4fa; /* 연한 하늘색 포인터 */
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #81d4fa, 0 0 20px #81d4fa;
+}
+
+/* 구분선 제거 및 스타일링 */
+hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+    margin: 0;
+}
+
+/* 푸터 스타일 */
+.footer {
+    padding: 20px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+

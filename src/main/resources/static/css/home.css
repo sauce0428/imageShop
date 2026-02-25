@@ -1,13 +1,56 @@
-body {
-  background-color: lightblue;
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh; /* 중앙 배치를 위해 높이 조절 */
+    text-align: center;
 }
 
-h1 {
-  color: white;
-  text-align: center;
+.home h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    letter-spacing: 5px;
+    /* 글자에서도 빛이 나는 효과 */
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 
+                 0 0 30px rgba(129, 212, 250, 0.5);
+    animation: floating 3s infinite ease-in-out;
 }
 
-p {
-  font-family: verdana;
-  font-size: 20px;
+.home p {
+    font-size: 1.2rem;
+    color: #81d4fa;
+    opacity: 0.8;
+}
+
+/* 둥둥 떠다니는 애니메이션 */
+@keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.star {
+    position: fixed; /* absolute보다 fixed가 배경으로 고정하기 더 좋습니다 */
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    /* 스크립트에서 넘겨준 --duration 사용, 없으면 기본 3s */
+    animation: twinkle var(--duration, 3s) infinite ease-in-out;
+    z-index: -1; 
+    pointer-events: none; /* 별 때문에 클릭이 안 되는 현상 방지 */
+}
+
+@keyframes twinkle {
+    0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(1); 
+        box-shadow: 0 0 0px rgba(255,255,255,0);
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.5); 
+        /* 별이 반짝일 때 살짝 빛 번짐 효과 추가 */
+        box-shadow: 0 0 10px rgba(255,255,255,0.8);
+    }
 }
