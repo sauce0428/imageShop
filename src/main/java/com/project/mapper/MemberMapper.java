@@ -24,4 +24,6 @@ public interface MemberMapper {
 	public void modifyAuth(MemberAuth memberAuth) throws Exception;
 	
 	public int remove(Member member) throws Exception;
+
+	public int countAll() throws Exception;
 }

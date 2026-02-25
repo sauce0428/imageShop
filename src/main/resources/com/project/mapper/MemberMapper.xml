@@ -72,4 +72,8 @@
 		WHERE user_no = #{userNo}
 	</update>
 
+	<!-- 회원 테이블의 데이터 건수 조회 -->
+	<select id="countAll" resultType="int">
+		SELECT count(*) FROM member
+	</select>
 </mapper>

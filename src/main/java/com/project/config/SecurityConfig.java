@@ -10,6 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.project.common.security.CustomAccessDeniedHandler;
+import com.project.common.security.CustomLoginSuccessHandler;
 
 //import com.zeus.common.security.CustomAccessDeniedHandler;
 //import com.zeus.common.security.CustomLoginSuccessHandler;
@@ -22,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 //@EnableMethodSecurity(prePostEnabled=true, securedEnabled=true)
 public class SecurityConfig {
-	
-	@Autowired 
+
+	@Autowired
 	DataSource dataSource;
 
 	@Bean
@@ -35,89 +40,77 @@ public class SecurityConfig {
 
 		// 2.시큐리티 인가정책
 		httpSecurity.authorizeHttpRequests(auth -> auth.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                .requestMatchers("/accessError", "/login", "/css/", "/js/", "/error").permitAll()
-                .requestMatchers("/board/**").authenticated() // 게시판 인증: 로그인
-                .requestMatchers("/manager/**").hasRole("MANAGER") // 게시판 인가: 매니저
-                .requestMatchers("/admin/**").hasRole("ADMIN") // 게시판 인가: 관리자
-                //.requestMatchers("/notice/list").permitAll() // 공지사항 목록: 누구나
-                //.requestMatchers("/notice/register").hasRole("ADMIN") // 공지사항 등록: 관리자만
-                .anyRequest().permitAll() // 그 외 모든 요청은 인증 필요없음
-        );
+				.requestMatchers("/accessError", "/login", "/css/", "/js/", "/error").permitAll()
+				.requestMatchers("/board/**").authenticated() // 게시판 인증: 로그인
+				.requestMatchers("/manager/**").hasRole("MANAGER") // 게시판 인가: 매니저
+				.requestMatchers("/admin/**").hasRole("ADMIN") // 게시판 인가: 관리자
+				// .requestMatchers("/notice/list").permitAll() // 공지사항 목록: 누구나
+				// .requestMatchers("/notice/register").hasRole("ADMIN") // 공지사항 등록: 관리자만
+				.anyRequest().permitAll() // 그 외 모든 요청은 인증 필요없음
+		);
 
 		// 3.접근거부시 예외처리 설정 (/accessError 페이지로 이동)
-		// httpSecurity.exceptionHandling(exception -> exception.accessDeniedPage("/accessError"));
-		//httpSecurity.exceptionHandling(exception -> exception.accessDeniedHandler(createAccessDeniedHandler()));
-		/*
+		// httpSecurity.exceptionHandling(exception ->
+		// exception.accessDeniedPage("/accessError"));
+		httpSecurity.exceptionHandling(exception ->
+		exception.accessDeniedHandler(createAccessDeniedHandler()));
+
 		// 4.기본폼 로그인을 활성화
-		//httpSecurity.formLogin(Customizer.withDefaults());
-		httpSecurity.formLogin(form -> form
-				.loginPage("/login")
-				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/board/list")
-				//.successHandler(createAuthenticationSuccessHandler())
-				.permitAll()
-				);
-		
-		// 5. 로그아웃 설정 수정
-	    httpSecurity.logout(logout -> logout
-	        .logoutUrl("/logout")                // 로그아웃을 처리할 URL (기본값: /logout)
-	        .logoutSuccessUrl("/login?logout")   // 로그아웃 성공 시 이동할 페이지
-	        .invalidateHttpSession(true)         // HTTP 세션 무효화 (기본값: true)
-	        .deleteCookies("JSESSIONID", "remember-me") // 로그아웃 시 관련 쿠키 삭제
-	        .permitAll()                         // 로그아웃 요청은 누구나 접근 가능해야 함
-	    );
-	    //6. 자동로그인기능 설정
-	    // 데이터 소스를 지정하고 테이블을 이용해서 기존 로그인 정보를 기록 
-	    // 쿠키의 유효 시간을 지정한다(24시간).  
-	    httpSecurity.rememberMe(remember -> remember
-	            .key("zeus")                                  // 인증 토큰 생성 시 사용할 키 (보안상 중요)
-	            .tokenRepository(createJDBCRepository())      // DB를 이용한 토큰 저장소 설정
-	            .tokenValiditySeconds(60 * 60 * 24)           // 토큰 유효 기간 (초 단위: 여기서는 24시간)
-	            //.userDetailsService(createUserDetailsService())     // 자동 로그인 시 사용자 정보를 조회할 서비스
-	    		  );
+		// httpSecurity.formLogin(Customizer.withDefaults());
+		httpSecurity.formLogin(form -> form.loginPage("/auth/login").loginProcessingUrl("/login")
+				// .defaultSuccessUrl("/board/list")
+				.successHandler(createAuthenticationSuccessHandler()).permitAll());
+		/*
+		 * // 5. 로그아웃 설정 수정 httpSecurity.logout(logout -> logout .logoutUrl("/logout")
+		 * // 로그아웃을 처리할 URL (기본값: /logout) .logoutSuccessUrl("/login?logout") // 로그아웃 성공
+		 * 시 이동할 페이지 .invalidateHttpSession(true) // HTTP 세션 무효화 (기본값: true)
+		 * .deleteCookies("JSESSIONID", "remember-me") // 로그아웃 시 관련 쿠키 삭제 .permitAll()
+		 * // 로그아웃 요청은 누구나 접근 가능해야 함 ); //6. 자동로그인기능 설정 // 데이터 소스를 지정하고 테이블을 이용해서 기존 로그인
+		 * 정보를 기록 // 쿠키의 유효 시간을 지정한다(24시간). httpSecurity.rememberMe(remember -> remember
+		 * .key("zeus") // 인증 토큰 생성 시 사용할 키 (보안상 중요)
+		 * .tokenRepository(createJDBCRepository()) // DB를 이용한 토큰 저장소 설정
+		 * .tokenValiditySeconds(60 * 60 * 24) // 토큰 유효 기간 (초 단위: 여기서는 24시간)
+		 * //.userDetailsService(createUserDetailsService()) // 자동 로그인 시 사용자 정보를 조회할 서비스
+		 * );
 		 */
-	    
+
 		return httpSecurity.build();
 	}
-	
-	@Bean 
-	 public PasswordEncoder createPasswordEncoder() { 
-	  return new BCryptPasswordEncoder(); 
-	 }
+
+	@Bean
+	public PasswordEncoder createPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	/*
-	private PersistentTokenRepository createJDBCRepository() {  
-		  JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();  
-		  repo.setDataSource(dataSource); 
-		  return repo; 
-		 } 
-
-	//@Autowired
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-			 auth.userDetailsService(createUserDetailsService()).passwordEncoder(createPasswordEncoder()); 
-	}
-	// 스프링 시큐리티의 UserDetailsService를 구현한 클래스를 빈으로 등록한다.  
-	 @Bean 
-	 public UserDetailsService createUserDetailsService() {  
-	  return new CustomUserDetailsService(); 
-	 } 
-	 
-	
-	// 사용자가 정의한 비번 암호화 처리기를 빈으로 등록한다. 
-	@Bean 
-	public PasswordEncoder createPasswordEncoder() {  
-		return new CustomNoOpPasswordEncoder(); 
-	}
-	
-	//3.접근거부시 예외처리 설정을 클래스로 이동한다.
-	@Bean 
-	public AccessDeniedHandler createAccessDeniedHandler() { 
-	return new CustomAccessDeniedHandler();
-	}
-	
-	@Bean 
-	 public AuthenticationSuccessHandler createAuthenticationSuccessHandler() { 
-	  return new CustomLoginSuccessHandler();
-	 } 
+	 * private PersistentTokenRepository createJDBCRepository() {
+	 * JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
+	 * repo.setDataSource(dataSource); return repo; }
+	 * 
+	 * //@Autowired protected void configure(AuthenticationManagerBuilder auth)
+	 * throws Exception {
+	 * auth.userDetailsService(createUserDetailsService()).passwordEncoder(
+	 * createPasswordEncoder()); } // 스프링 시큐리티의 UserDetailsService를 구현한 클래스를 빈으로
+	 * 등록한다.
+	 * 
+	 * @Bean public UserDetailsService createUserDetailsService() { return new
+	 * CustomUserDetailsService(); }
+	 * 
+	 * 
+	 * // 사용자가 정의한 비번 암호화 처리기를 빈으로 등록한다.
+	 * 
+	 * @Bean public PasswordEncoder createPasswordEncoder() { return new
+	 * CustomNoOpPasswordEncoder(); }
 	 */
+	// 3.접근거부시 예외처리 설정을 클래스로 이동한다.
+	@Bean
+	public AccessDeniedHandler createAccessDeniedHandler() {
+		return new CustomAccessDeniedHandler();
+	}
+
+	@Bean
+	public AuthenticationSuccessHandler createAuthenticationSuccessHandler() {
+		return new CustomLoginSuccessHandler();
+	}
+
 }
