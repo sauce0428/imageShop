@@ -4,7 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -24,6 +25,9 @@
 
 		<form:form modelAttribute="board" action="/board/modify" method="post">
 			<form:hidden path="boardNo" />
+			!-- 현재 페이지 번호와 페이징 크기를 숨겨진 필드 요소를 사용하여 전달한다. --> 
+ 			<input type="hidden" id="page" name="page" value="${pgrq.page}">
+			<input type="hidden" id="sizePerPage" name="sizePerPage" value="${pgrq.sizePerPage}">
 			<table>
 				<tr>
 					<td><spring:message code="board.title" /></td>
@@ -45,7 +49,7 @@
 
 		<div>
 			<!-- 사용자정보를 가져온다. -->
-			<sec:authentication property="principal" var="principal"/>
+			<sec:authentication property="principal" var="principal" />
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<button type="submit" id="btnModify">
 					<spring:message code="action.modify" />
@@ -54,18 +58,18 @@
 					<spring:message code="action.remove" />
 				</button>
 			</sec:authorize>
-			
+
 			<sec:authorize access="hasRole('ROLE_MEMBER')">
 				<c:if test="${principal.username eq board.writer}">
 					<button type="submit" id="btnModify">
-					<spring:message code="action.modify" />
-				</button>
-				<button type="submit" id="btnRemove">
-					<spring:message code="action.remove" />
-				</button>
+						<spring:message code="action.modify" />
+					</button>
+					<button type="submit" id="btnRemove">
+						<spring:message code="action.remove" />
+					</button>
 				</c:if>
 			</sec:authorize>
-			
+
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
 			</button>
@@ -83,12 +87,12 @@
 			});
 
 			$("#btnRemove").on("click", function() {
-				let boardNo = $("#boardNo")
-				self.location = "/board/remove?boardNo="+boardNo.val();
+				let boardNo = $("#boardNo").val();
+				self.location = "/board/remove?${pgrq.toUriString()}boardNo=" + boardNo.val();
 			});
 
 			$("#btnList").on("click", function() {
-				self.location = "/board/list";
+				self.location = "/board/list${pgrq.toUriString()}";
 			});
 
 		});
