@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Image Shop</title>
-<link rel="stylesheet" href="/css/user.css">
+<link rel="stylesheet" href="/css/codegroup.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -69,12 +69,6 @@
 			document.body.appendChild(star);
 		}
 
-		var result = "${msg}";
-		if (result === "SUCCESS") {
-			alert("<spring:message code='common.processSuccess' />");
-		} else if (result === "FAIL") {
-			alert("삭제처리 실패");
-		}
 	</script>
 </body>
 </html>
