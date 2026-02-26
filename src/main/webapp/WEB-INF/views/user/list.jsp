@@ -22,17 +22,17 @@
 			<spring:message code="user.header.list" />
 		</h2>
 		<a href="/user/register"><spring:message code="action.new" /></a>
-		<table border="1" class="codedetail_table">
+		<table border="1" class="user_table">
 			<tr>
-				<th align="center" width="60"><spring:message code="user.no" /></th>
-				<th align="center" width="80"><spring:message
+				<th align="center" width="70"><spring:message code="user.no" /></th>
+				<th align="center" width="70"><spring:message
 						code="user.userId" /></th>
-				<th align="center" width="300"><spring:message
+				<th align="center" width="400"><spring:message
 						code="user.userPw" /></th>
-				<th align="center" width="100"><spring:message
+				<th align="center" width="150"><spring:message
 						code="user.userName" /></th>
-				<th align="center" width="100"><spring:message code="user.job" /></th>
-				<th align="center" width="180"><spring:message
+				<th align="center" width="280"><spring:message code="user.job" /></th>
+				<th align="center" width="280"><spring:message
 						code="user.regdate" /></th>
 			</tr>
 			<c:choose>
@@ -60,15 +60,6 @@
 	<!-- 메인화면 작업끝 -->
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-	<!-- 이벤트처리방식 -->
-	<script>
-		var result = "${msg}";
-		if (result === "SUCCESS") {
-			alert("<spring:message code='common.processSuccess' />");
-		} else if (result === "FAIL") {
-			alert("처리 실패");
-		}
-	</script>
 	<script>
 		const starsCount = 300; // 별 수 증가
 		for (let i = 0; i < starsCount; i++) {
@@ -83,12 +74,6 @@
 			document.body.appendChild(star);
 		}
 
-		var result = "${msg}";
-		if (result === "SUCCESS") {
-			alert("<spring:message code='common.processSuccess' />");
-		} else if (result === "FAIL") {
-			alert("삭제처리 실패");
-		}
 	</script>
 </body>
 </html>
