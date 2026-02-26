@@ -1,134 +1,645 @@
-알겠습니다! 별들이 위아래로 미세하게 움직이던 translateY 속성을 모두 제거하여, 제자리에서 고정된 상태로 밝기만 예쁘게 반짝이도록 코드를 수정했습니다.
-
-이제 별들은 산만하게 움직이지 않고 밤하늘에 박힌 듯 고정되어 반짝일 것입니다. 버튼에 아이콘을 넣을 수 있는 설정까지 포함한 전체 코드입니다.
-
-🌌 제자리에서 반짝이는 대량의 별 + 네온 버튼 통합 코드
-CSS
-/* 1. 배경 설정: 짙은 우주 */ 
+알겠습니다 ! 별들이 위아래로 미세하게 움직이던 translateY 속성을 모두 제거하여, 제자리에서 고정된 상태로 밝기만 예쁘게 반짝이도록 코드를 수정했습니다
+	 . 이제 별들은 산만하게 움직이지 않고 밤하늘에 박힌 듯 고정되어 반짝일 것입니다 . 버튼에 아이콘을 넣을 수 있는 설정까지 포함한 전체 코드입니다
+	 . 🌌 제자리에서 반짝이는 대량의 별+네온 버튼 통합 코드
+CSS /* 1. 배경 설정: 짙은 우주 */   
 body {
-    margin: 0;
-    padding: 0;
-    background: #050505; 
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    font-family: 'Pretendard', sans-serif;
+	margin: 0;
+	padding: 0;
+	background: #050505;
+	min-height: 100vh;
+	overflow-x: hidden;
+	position: relative;
+	font-family: 'Pretendard', sans-serif;
 }
 
 /* 2. 대량의 별 레이어 (가상 요소 활용) */
 body::before, body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 2px;
-    height: 2px;
-    background: transparent;
-    z-index: -1;
-    /* 수많은 별들의 위치 정의 */
-    box-shadow: 
-        15vw 10vh #fff, 35vw 25vh #fff, 55vw 15vh #fff, 85vw 5vh #fff, 10vw 40vh #fff,
-        25vw 60vh #81d4fa, 45vw 85vh #fff, 65vw 50vh #fff, 95vw 70vh #fff, 5vw 90vh #fff,
-        12vw 15vh #fff, 32vw 45vh #fff, 52vw 75vh #81d4fa, 72vw 25vh #fff, 92vw 55vh #fff,
-        18vw 33vh #fff, 38vw 63vh #fff, 58vw 93vh #fff, 78vw 13vh #fff, 8vw 73vh #fff,
-        22vw 22vh #fff, 42vw 42vh #fff, 62vw 62vh #fff, 82vw 82vh #fff, 2vw 12vh #fff,
-        11vw 81vh #fff, 31vw 21vh #fff, 51vw 41vh #fff, 71vw 61vh #fff, 91vw 1vh #fff,
-        20vw 50vh #fff, 40vw 30vh #fff, 60vw 10vh #fff, 80vw 90vh #fff, 50vw 50vh #fff;
-    /* 제자리 반짝임 애니메이션 적용 */
-    animation: static_twinkle 4s infinite ease-in-out;
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 2px;
+	height: 2px;
+	background: transparent;
+	z-index: -1;
+	/* 수많은 별들의 위치 정의 */
+	box-shadow: 15vw 10vh #fff, 35vw 25vh #fff, 55vw 15vh #fff, 85vw 5vh
+		#fff, 10vw 40vh #fff, 25vw 60vh #81d4fa, 45vw 85vh #fff, 65vw 50vh
+		#fff, 95vw 70vh #fff, 5vw 90vh #fff, 12vw 15vh #fff, 32vw 45vh #fff,
+		52vw 75vh #81d4fa, 72vw 25vh #fff, 92vw 55vh #fff, 18vw 33vh #fff,
+		38vw 63vh #fff, 58vw 93vh #fff, 78vw 13vh #fff, 8vw 73vh #fff, 22vw
+		22vh #fff, 42vw 42vh #fff, 62vw 62vh #fff, 82vw 82vh #fff, 2vw 12vh
+		#fff, 11vw 81vh #fff, 31vw 21vh #fff, 51vw 41vh #fff, 71vw 61vh #fff,
+		91vw 1vh #fff, 20vw 50vh #fff, 40vw 30vh #fff, 60vw 10vh #fff, 80vw
+		90vh #fff, 50vw 50vh #fff;
+	/* 제자리 반짝임 애니메이션 적용 */
+	animation: static_twinkle 4s infinite ease-in-out;
 }
 
 /* 두 번째 별 레이어 (속도만 다르게 설정) */
 body::after {
-    width: 1px;
-    height: 1px;
-    box-shadow: 
-        5vw 5vh #fff, 15vw 85vh #fff, 25vw 35vh #fff, 35vw 75vh #fff, 45vw 15vh #fff,
-        55vw 95vh #fff, 65vw 45vh #fff, 75vw 5vh #fff, 85vw 65vh #fff, 95vw 25vh #fff,
-        3vw 55vh #81d4fa, 13vw 25vh #fff, 23vw 95vh #fff, 33vw 45vh #fff, 43vw 15vh #fff,
-        53vw 65vh #fff, 63vw 35vh #fff, 73vw 85vh #fff, 83vw 5vh #fff, 93vw 75vh #fff;
-    animation: static_twinkle 6s infinite ease-in-out;
-    opacity: 0.6;
+	width: 1px;
+	height: 1px;
+	box-shadow: 5vw 5vh #fff, 15vw 85vh #fff, 25vw 35vh #fff, 35vw 75vh #fff,
+		45vw 15vh #fff, 55vw 95vh #fff, 65vw 45vh #fff, 75vw 5vh #fff, 85vw
+		65vh #fff, 95vw 25vh #fff, 3vw 55vh #81d4fa, 13vw 25vh #fff, 23vw 95vh
+		#fff, 33vw 45vh #fff, 43vw 15vh #fff, 53vw 65vh #fff, 63vw 35vh #fff,
+		73vw 85vh #fff, 83vw 5vh #fff, 93vw 75vh #fff;
+	animation: static_twinkle 6s infinite ease-in-out;
+	opacity: 0.6;
 }
 
 /* 3. 제자리 반짝임 애니메이션 (움직임 효과 제거됨) */
-@keyframes static_twinkle {
-    0%, 100% {
-        opacity: 0.4;
-        transform: scale(1); /* 위치 이동(translate) 없이 크기만 유지 */
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.2); /* 제자리에서 살짝 커지며 반짝임 */
-        filter: drop-shadow(0 0 5px white);
-    }
+@
+keyframes static_twinkle { 0%, 100% {
+	opacity: 0.4;
+	transform: scale(1); /* 위치 이동(translate) 없이 크기만 유지 */
+}
+
+50
+
+
+%
+{
+opacity
+
+
+:
+
+
+1
+;
+
+
+transform
+
+
+:
+
+
+scale
+(
+
+
+1
+.2
+
+
+)
+; /* 제자리에서 살짝 커지며 반짝임 */
+
+
+filter
+
+
+:
+
+
+drop-shadow
+(
+
+
+0
+
+
+0
+
+
+5px
+
+
+white
+
+
+)
+;
+
+
+}
 }
 
 /* --- 컨테이너 및 UI 스타일 --- */
-.codegroup_list, .codegroup_modify, .codegroup_read, .codegroup_register {
-    margin: 50px auto;
-    padding: 35px;
-    width: 80%;
-    max-width: 900px;
+.codegroup_list, .codegroup_modify, .codegroup_read, .codegroup_register
+	{
+	margin: 50px auto;
+	padding: 35px;
+	width: 80%;
+	max-width: 900px;
+	background: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(10px);
+	border-radius: 20px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+	position: relative;
+	z-index: 10;
+}
+
+h2 {
+	color: #81d4fa;
+	text-shadow: 0 0 10px rgba(129, 212, 250, 0.5);
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+table {
+	width: 80%;
+	max-width: 900px;
+	border-collapse: separate;
+	border-spacing: 0 10px;
+	max-width: 900px;
+}
+
+th {
+	background: rgba(129, 212, 250, 0.2);
+	color: #fff;
+	padding: 15px;
+	text-transform: uppercase;
+}
+
+td {
+	background: rgba(255, 255, 255, 0.03);
+	padding: 15px;
+	color: #ddd;
+}
+
+.user_table td:nth-child(3) {
+    font-size: 13px;
+    color: #999;         
+    letter-spacing: 1px;   
+    word-break: break-all; 
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0.7;          
+}
+
+/* 1. 버튼 공통 베이스 (기존 속성 유지 및 강화) */
+button, #btnRegister, #btnList {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 12px 30px;
+	border-radius: 50px;
+	font-weight: bold;
+	text-decoration: none;
+	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	cursor: pointer;
+	color: white;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	backdrop-filter: blur(5px);
+}
+
+/* 버튼 내 아이콘 이미지 스타일 */
+button img, #btnRegister img, #btnList img {
+	width: 18px;
+	height: 18px;
+	object-fit: contain;
+	filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+}
+
+/* 2. 등록 버튼 (#btnRegister): 초신성 푸른 네온 */
+#btnRegister {
+	background: linear-gradient(45deg, rgba(2, 136, 209, 0.2),
+		rgba(38, 198, 218, 0.4));
+	border-color: #00d2ff;
+	box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+}
+
+#btnRegister:hover {
+	background: #00d2ff;
+	box-shadow: 0 0 20px #00d2ff, 0 0 40px rgba(0, 210, 255, 0.4);
+	transform: translateY(-3px);
+	color: #050505; /* 글자색 반전으로 가독성 확보 */
+}
+
+/* 3. 목록 버튼 (#btnList): 성운 보라 네온 */
+#btnList {
+	background: linear-gradient(45deg, rgba(157, 80, 187, 0.2),
+		rgba(110, 72, 170, 0.4));
+	border-color: #9d50bb;
+	box-shadow: 0 0 10px rgba(157, 80, 187, 0.3);
+}
+
+#btnList:hover {
+	background: #9d50bb;
+	box-shadow: 0 0 20px #9d50bb, 0 0 40px rgba(157, 80, 187, 0.4);
+	transform: translateY(-3px);
+	color: white;
+}
+
+/* 클릭 시 물리적인 눌림 효과 */
+#btnRegister:active, #btnList:active {
+	transform: scale(0.95);
+	box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+/* 3. 수정 버튼 (#btnModify): 태양빛 오렌지/골드 네온 */
+button#btnModify {
+	background: linear-gradient(45deg, rgba(255, 143, 0, 0.2),
+		rgba(255, 202, 40, 0.4)) !important;
+	border-color: #ffca28 !important;
+	box-shadow: 0 0 10px rgba(255, 202, 40, 0.3) !important;
+}
+
+button#btnModify:hover {
+	background: #ffca28 !important;
+	box-shadow: 0 0 20px #ffca28, 0 0 40px rgba(255, 202, 40, 0.4)
+		!important;
+	transform: translateY(-3px) !important;
+	color: #050505 !important;
+}
+
+/* 4. 삭제 버튼 (#btnRemove): 블랙홀 레드/핑크 네온 */
+button#btnRemove {
+	background: linear-gradient(45deg, rgba(211, 47, 47, 0.2),
+		rgba(255, 23, 68, 0.4)) !important;
+	border-color: #ff1744 !important;
+	box-shadow: 0 0 10px rgba(255, 23, 68, 0.3) !important;
+}
+
+button#btnRemove:hover {
+	background: #ff1744 !important;
+	box-shadow: 0 0 20px #ff1744, 0 0 40px rgba(255, 23, 68, 0.4) !important;
+	transform: translateY(-3px) !important;
+	color: white !important;
+}
+
+/* 5. Edit 버튼 (#btnEdit): 에메랄드 성운 네온 */
+button#btnEdit {
+	background: linear-gradient(45deg, rgba(0, 191, 165, 0.2),
+		rgba(100, 255, 218, 0.4)) !important;
+	border-color: #64ffda !important;
+	box-shadow: 0 0 10px rgba(100, 255, 218, 0.3) !important;
+}
+
+button#btnEdit:hover {
+	background: #64ffda !important;
+	box-shadow: 0 0 20px #64ffda, 0 0 40px rgba(100, 255, 218, 0.4)
+		!important;
+	transform: translateY(-3px) !important;
+	color: #050505 !important; /* 배경이 밝으므로 글자색은 어둡게 */
+}
+
+/* 모든 버튼 공통 목록에 #btnEdit 추가 (모양 유지용) */
+button#btnRegister, button#btnList, button#btnModify, button#btnRemove,
+	button#btnEdit {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 8px !important;
+	padding: 12px 30px !important;
+	border-radius: 50px !important;
+	font-weight: bold !important;
+	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+	cursor: pointer !important;
+	color: white !important;
+	text-transform: uppercase !important;
+	letter-spacing: 1px !important;
+	backdrop-filter: blur(5px) !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	outline: none !important;
+	margin: 5px; /* 버튼 간격 확보 */
+}
+
+우주 배경과 네온 버튼의 화려한 스타일에 맞춰, **테이블 입력창(Input, Textarea)**도 투명한 유리 질감과 은은한 발광 효과를 주어 통일감을 높였습니다
+	 . 특히 readonly ="true " 속성이 걸려 있는 점을 고려하여, 읽기 전용 상태일 때도 답답해 보이지 않고 "홀로그램 디스플레이
+	 " 같은 느낌이 나도록 설계했습니다 . 🌌 우주 테마 테이블 & 입력창 CSS
+기존 CSS 코드 하단에 추가하시거나, 해당 페이지의 <style>태그 안에 넣어주세요 . CSS
+	/* 1. 테이블 전체 구조 */  
+table {
+	width: 80%;
+	max-width: 900px;
+	border-collapse: separate;
+	border-spacing: 0 15px; /* 행 사이 간격 */
+	margin: 20px 0;
+}
+
+/* 2. 테이블 왼쪽 라벨 (항목명) */
+table td:first-child {
+	width: 120px;
+	color: #81d4fa; /* 밝은 하늘색 */
+	font-weight: bold;
+	text-shadow: 0 0 8px rgba(129, 212, 250, 0.6);
+	padding-right: 20px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* 3. 입력창(Input) 및 텍스트영역(Textarea) 공통 스타일 */
+input[type="text"], textarea {
+	width: 80%; max-width : 900px;
+	padding: 12px 15px;
+	background: rgba(255, 255, 255, 0.07) !important; /* 반투명 배경 */
+	border: 1px solid rgba(129, 212, 250, 0.3) !important; /* 은은한 푸른 테두리 */
+	border-radius: 8px;
+	color: #ffffff !important;
+	font-size: 14px;
+	font-family: 'Pretendard', sans-serif;
+	outline: none;
+	transition: all 0.3s ease;
+	backdrop-filter: blur(5px);
+}
+
+/* 4. Readonly(읽기 전용) 상태일 때의 특수 효과 */
+input[readonly], textarea[readonly] {
+	cursor: default;
+	background: rgba(129, 212, 250, 0.03) !important; /* 더 투명하게 */
+	border-color: rgba(129, 212, 250, 0.2) !important;
+	color: rgba(255, 255, 255, 0.8) !important;
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 5. 입력창 포커스/호버 시 (홀로그램 강조) */
+input[type="text"]:focus, textarea:focus {
+	border-color: #81d4fa !important;
+	box-shadow: 0 0 15px rgba(129, 212, 250, 0.4);
+	background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 6. 텍스트영역(내용) 높이 조절 */
+textarea {
+	height: 200px;
+	line-height: 1.6;
+	resize: none; /* 크기 조절 비활성화 */
+}
+
+/* 7. 에러 메시지 스타일 */
+font[color="red"] {
+	display: block;
+	margin-top: 5px;
+	font-size: 12px;
+	color: #ff5252 !important; /* 네온 레드 */
+	text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+}
+
+/* 3. 로그인 컨테이너 (유리 질감) */
+div[align="center"] {
+    margin: auto;
+    padding: 50px;
+    width: 100%;
+    max-width: 450px; /* 로그인창은 조금 더 콤팩트하게 */
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    border: 1px solid rgba(129, 212, 250, 0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    z-index: 10;
+}
+
+/* 4. 제목 스타일 */
+h2 {
+    color: #81d4fa;
+    text-shadow: 0 0 15px rgba(129, 212, 250, 0.5);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+}
+
+/* 에러 메시지/로그아웃 메시지 */
+h2:nth-of-type(2), h2:nth-of-type(3) {
+    font-size: 1rem;
+    color: #ff5252;
+    text-shadow: 0 0 10px rgba(255, 82, 82, 0.4);
+}
+
+/* 5. 로그인 테이블 및 입력창 */
+table {
+    width: 100%;
+    border-spacing: 0 15px;
+}
+
+table td:first-child {
+    color: #81d4fa;
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding-right: 15px;
+    text-align: center;
+    width: 80px;
+}
+
+/* 아이디, 비밀번호 입력창 공통 */
+input[type="text"], 
+input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(129, 212, 250, 0.3) !important;
+    border-radius: 12px;
+    color: #fff !important;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, 
+input[type="password"]:focus {
+    border-color: #81d4fa !important;
+    box-shadow: 0 0 15px rgba(129, 212, 250, 0.4);
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* 체크박스 영역 (Remember Me) */
+input[type="checkbox"] {
+    accent-color: #81d4fa;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* 6. 로그인 버튼: 네온 사이언 스타일 */
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 50px;
+    border: 1px solid #00d2ff;
+    background: linear-gradient(45deg, rgba(2, 136, 209, 0.3), rgba(38, 198, 218, 0.5));
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+}
+
+button:hover {
+    background: #00d2ff;
+    color: #050505;
+    box-shadow: 0 0 25px #00d2ff, 0 0 50px rgba(0, 210, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+보내주신 회원가입(Register) 페이지 구조에 맞춰서, 앞서 맞췄던 정지된 별빛 배경과 네온 스타일의 입력창 및 버튼 스타일을 완벽하게 통합한 전체 CSS 코드를 정리해 드립니다.
+
+특히 form:select(직업 선택) 부분은 일반 입력창과 스타일이 달라지기 쉬운데, 이 부분까지 우주선 대시보드 느낌의 홀로그램 스타일로 통일했습니다.
+
+🌌 회원가입 페이지 통합 네온 우주 CSS
+기존 codegroup.css 파일을 아래 내용으로 업데이트하거나 추가해 주세요.
+
+CSS
+/* 1. 배경 및 별빛 (자바스크립트 생성 별 대응) */
+body {
+    margin: 0;
+    padding: 0;
+    background: #050505;
+    min-height: 100vh;
+    font-family: 'Pretendard', sans-serif;
+    color: #ffffff;
+    overflow-x: hidden;
     position: relative;
+}
+
+.star {
+    position: fixed;
+    background: white;
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.5;
+    animation: static_twinkle 3s infinite ease-in-out;
+}
+
+@keyframes static_twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 5px white); }
+}
+
+/* 2. 메인 컨테이너 (유리 질감) */
+div[align="center"] {
+    margin: 50px auto;
+    padding: 40px;
+    width: 80%;
+    max-width: 850px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    border: 1px solid rgba(129, 212, 250, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     z-index: 10;
 }
 
 h2 {
     color: #81d4fa;
-    text-shadow: 0 0 10px rgba(129, 212, 250, 0.5);
-    margin-bottom: 30px;
-    text-align: center;
+    text-shadow: 0 0 15px rgba(129, 212, 250, 0.6);
+    margin-bottom: 40px;
+    font-size: 2rem;
 }
 
-table {
+/* 3. 테이블 및 입력창 (Input & Select) */
+.user_table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 10px;
+    border-spacing: 0 15px;
 }
 
-th {
-    background: rgba(129, 212, 250, 0.2);
+.user_table td:first-child {
+    width: 150px;
+    color: #81d4fa;
+    font-weight: bold;
+    text-align: center;
+    padding-right: 25px;
+    text-shadow: 0 0 5px rgba(129, 212, 250, 0.4);
+}
+
+/* 모든 입력창(텍스트, 비밀번호, 셀렉트박스) 통일 */
+input[type="text"], 
+input[type="password"],
+select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(129, 212, 250, 0.3) !important;
+    border-radius: 10px;
+    color: #fff !important;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+/* 직업 선택(Select) 전용 스타일 */
+select {
+    cursor: pointer;
+    appearance: none; /* 기본 화살표 제거 */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2381d4fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+}
+
+select option {
+    background-color: #0a0a0a;
     color: #fff;
-    padding: 15px;
-    text-transform: uppercase;
 }
 
-td {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 15px;
-    color: #ddd;
+/* 포커스 시 홀로그램 발광 */
+input:focus, select:focus {
+    border-color: #81d4fa !important;
+    box-shadow: 0 0 15px rgba(129, 212, 250, 0.5);
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
-/* 버튼 스타일 (아이콘 정렬 포함) */
-button, .codegroup_list a {
+/* 에러 메시지 */
+font[color="red"] {
+    font-size: 12px;
+    color: #ff5252 !important;
+    text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+    margin-left: 10px;
+}
+
+/* 4. 네온 버튼 스타일 */
+button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px; /* 아이콘과 글자 사이 간격 */
-    padding: 10px 25px;
+    gap: 8px;
+    padding: 12px 35px;
+    margin: 20px 10px;
     border-radius: 50px;
-    background: linear-gradient(45deg, #0288d1, #26c6da);
-    color: white;
     font-weight: bold;
-    text-decoration: none;
-    transition: 0.3s;
-    border: none;
     cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-button img, .codegroup_list a img {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
+/* 등록 버튼: 초신성 블루 */
+#btnRegister {
+    background: linear-gradient(45deg, rgba(2, 136, 209, 0.3), rgba(38, 198, 218, 0.5));
+    border: 1px solid #00d2ff;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
 }
 
-button:hover, .codegroup_list a:hover {
+#btnRegister:hover {
+    background: #00d2ff;
+    color: #000;
+    box-shadow: 0 0 25px #00d2ff;
     transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(38, 198, 218, 0.6);
 }
+
+/* 목록 버튼: 성운 퍼플 */
+#btnList {
+    background: linear-gradient(45deg, rgba(157, 80, 187, 0.3), rgba(110, 72, 170, 0.5));
+    border: 1px solid #9d50bb;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(157, 80, 187, 0.3);
+}
+
+#btnList:hover {
+    background: #9d50bb;
+    box-shadow: 0 0 25px #9d50bb;
+    transform: translateY(-3px);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
