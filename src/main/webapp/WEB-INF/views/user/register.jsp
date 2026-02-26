@@ -20,7 +20,7 @@
 	<div align="center">
 		<h2>
 			<spring:message code="user.header.register" />
-		</h2>
+		</h2>	
 		<form:form modelAttribute="member" action="/user/register"
 			method="post">
 			<table class="user_table">
@@ -78,6 +78,27 @@
 				self.location = "/user/list";
 			});
 		});
+	</script>
+	<script>
+		const starsCount = 300; // 별 수 증가
+		for (let i = 0; i < starsCount; i++) {
+			const star = document.createElement("div");
+			star.className = "star";
+			star.style.top = Math.random() * window.innerHeight + "px";
+			star.style.left = Math.random() * window.innerWidth + "px";
+			star.style.width = star.style.height = (Math.random() * 2 + 1)
+					+ "px";
+			star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+			star.style.animationDelay = Math.random() * 5 + "s";
+			document.body.appendChild(star);
+		}
+
+		var result = "${msg}";
+		if (result === "SUCCESS") {
+			alert("<spring:message code='common.processSuccess' />");
+		} else if (result === "FAIL") {
+			alert("삭제처리 실패");
+		}
 	</script>
 </body>
 </html>

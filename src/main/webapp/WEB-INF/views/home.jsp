@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> 
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -24,7 +24,7 @@
 		<P>${serverTime}</P>
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-<!-- 별 생성 스크립트 -->
+	<!-- 별 생성 스크립트 -->
 	<script>
 		const starsCount = 300; // 별 수 증가
 		for (let i = 0; i < starsCount; i++) {
@@ -39,12 +39,16 @@
 			document.body.appendChild(star);
 		}
 
-		var result = "${msg}";
-		if (result === "SUCCESS") {
-			alert("<spring:message code='common.processSuccess' />");
-		} else if (result === "FAIL") {
-			alert("삭제처리 실패");
-		}
 	</script>
+	<div class="star"
+		style="top: 10%; left: 15%; width: 2px; height: 2px; --duration: 3s; --delay: 0s;"></div>
+	<div class="star"
+		style="top: 30%; left: 80%; width: 3px; height: 3px; --duration: 4s; --delay: 1.5s;"></div>
+	<div class="star"
+		style="top: 50%; left: 40%; width: 2px; height: 2px; --duration: 2s; --delay: 0.5s;"></div>
+	<div class="star"
+		style="top: 70%; left: 10%; width: 1px; height: 1px; --duration: 5s; --delay: 2s;"></div>
+	<div class="star"
+		style="top: 20%; left: 60%; width: 2px; height: 2px; --duration: 3.5s; --delay: 3s;"></div>
 </body>
 </html>

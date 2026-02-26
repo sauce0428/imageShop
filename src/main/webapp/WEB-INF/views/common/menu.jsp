@@ -6,11 +6,12 @@
 <div class="menu-bar" align="right"> 
  <table> 
   <tr> 
-   <td width="20%"><a href="/"><spring:message code="header.home" /></a></td> 
+   <td width="20%"><a href="/user/register"><spring:message code="header.home" /></a></td> 
 
    <!-- 인증을 하지 않았을때 메뉴  --> 
    <sec:authorize access="!isAuthenticated()"> 
-        <td width="20%"><a href="/user/register"><spring:message code="header.joinMember" /></a></td>
+   			<!-- 회원 게시판 리스트 --> 
+            <td width="120"><a href="/board/list">회원게시판리스트</a></td>
    </sec:authorize> 
 
    <!-- 인증을 했을때 메뉴(인가: 관리자, 회원, 메니저)  --> 
@@ -23,11 +24,14 @@
                <td width="20%"><a href="/codedetail/list"><spring:message code="menu.codedetail.list" /></a></td>
                 <!-- 회원 관리 메뉴 --> 
                <td width="20%"><a href="/user/list"><spring:message code="menu.user.admin" /></a></td>
+               <!-- 회원 게시판 리스트 --> 
+               <td width="120"><a href="/board/list">회원게시판리스트</a></td>
            </sec:authorize> 
 
            <!-- 인증완료, (인가: 회원)일때 들어갈 메뉴  --> 
            <sec:authorize access="hasRole('ROLE_MEMBER')">
-
+               <!-- 회원 게시판 리스트 --> 
+               <td width="120"><a href="/board/list">회원게시판리스트</a></td>
            </sec:authorize> 
 
    </sec:authorize> 
