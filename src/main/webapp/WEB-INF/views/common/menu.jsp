@@ -6,7 +6,7 @@
 <div class="menu-bar" align="right"> 
  <table> 
   <tr> 
-   <td width="20%"><a href="/user/register"><spring:message code="header.home" /></a></td> 
+   <td width="20%"><a href="/"><spring:message code="header.home" /></a></td> 
 
    <!-- 인증을 하지 않았을때 메뉴  --> 
    <sec:authorize access="!isAuthenticated()"> 
