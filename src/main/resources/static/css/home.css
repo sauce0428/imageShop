@@ -1,56 +1,126 @@
+/* 1. 배경 설정: 검은 우주 */
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 2. 대량의 별 생성 (제자리 반짝임 설정) */
+body::before, body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    z-index: -1;
+    pointer-events: none;
+    /* 수많은 별들의 좌표 */
+    box-shadow: 
+        10vw 10vh #fff, 20vw 30vh #fff, 30vw 15vh #fff, 40vw 50vh #fff, 50vw 20vh #fff,
+        60vw 80vh #fff, 70vw 40vh #fff, 80vw 10vh #fff, 90vw 60vh #fff, 5vw 90vh #fff,
+        15vw 75vh #fff, 25vw 55vh #81d4fa, 35vw 85vh #fff, 45vw 35vh #fff, 55vw 65vh #fff,
+        65vw 15vh #fff, 75vw 95vh #fff, 85vw 45vh #fff, 95vw 25vh #fff, 2vw 20vh #fff,
+        18vw 42vh #fff, 38vw 62vh #fff, 58vw 12vh #fff, 78vw 32vh #fff, 98vw 82vh #fff,
+        7vw 53vh #fff, 27vw 73vh #fff, 47vw 93vh #fff, 67vw 23vh #fff, 87vw 63vh #fff;
+    
+    /* 움직임 없이 제자리에서 반짝이도록 설정 */
+    animation: twinkle_fixed 4s infinite ease-in-out;
+}
+
+/* 두 번째 별 레이어 (크기와 타이밍 차이) */
+body::after {
+    width: 1px;
+    height: 1px;
+    box-shadow: 
+        12vw 12vh #fff, 22vw 22vh #fff, 32vw 32vh #fff, 42vw 42vh #fff, 52vw 52vh #fff,
+        62vw 62vh #fff, 72vw 72vh #fff, 82vw 82vh #fff, 92vw 92vh #fff, 3vw 60vh #81d4fa,
+        13vw 80vh #fff, 23vw 40vh #fff, 33vw 10vh #fff, 43vw 90vh #fff, 53vw 30vh #fff,
+        63vw 50vh #fff, 73vw 20vh #fff, 83vw 70vh #fff, 93vw 40vh #fff, 8vw 15vh #fff;
+    animation: twinkle_fixed 6s infinite ease-in-out; /* reverse 제거하여 제자리 고정 */
+    opacity: 0.7;
+}
+
+/* 3. 제자리 반짝임 애니메이션 (움직임 효과 제거) */
+@keyframes twinkle_fixed {
+    0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(1); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.4); /* 제자리에서 커지기만 함 */
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+    }
+}
+
+/* 4. 홈 화면 스타일 */
 .home {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 60vh; /* 중앙 배치를 위해 높이 조절 */
+    height: 100vh;
     text-align: center;
+    position: relative;
+    z-index: 10;
 }
 
 .home h1 {
-    font-size: 3.5rem;
+    font-size: 4rem;
     margin-bottom: 20px;
-    letter-spacing: 5px;
-    /* 글자에서도 빛이 나는 효과 */
+    letter-spacing: 8px;
     color: #fff;
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 
-                 0 0 30px rgba(129, 212, 250, 0.5);
-    animation: floating 3s infinite ease-in-out;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 
+                 0 0 40px rgba(129, 212, 250, 0.6);
+    animation: floating 3.5s infinite ease-in-out;
 }
 
 .home p {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: #81d4fa;
-    opacity: 0.8;
+    opacity: 0.9;
+    text-shadow: 0 0 10px rgba(129, 212, 250, 0.4);
+    margin-bottom: 30px;
 }
 
-/* 둥둥 떠다니는 애니메이션 */
+/* 중앙 타이틀이 둥둥 떠다니는 효과 (배경 별은 고정) */
 @keyframes floating {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-15px); }
 }
 
-.star {
-    position: fixed; /* absolute보다 fixed가 배경으로 고정하기 더 좋습니다 */
-    background: white;
-    border-radius: 50%;
-    opacity: 0.5;
-    /* 스크립트에서 넘겨준 --duration 사용, 없으면 기본 3s */
-    animation: twinkle var(--duration, 3s) infinite ease-in-out;
-    z-index: -1; 
-    pointer-events: none; /* 별 때문에 클릭이 안 되는 현상 방지 */
+/* 5. 버튼 스타일 (아이콘 대응 가능하도록 flex 적용) */
+.home .btn, .home a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 30px;
+    border-radius: 50px;
+    background: rgba(129, 212, 250, 0.1);
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    border: 1px solid rgba(129, 212, 250, 0.4);
+    transition: 0.3s;
+    backdrop-filter: blur(5px);
 }
 
-@keyframes twinkle {
-    0%, 100% { 
-        opacity: 0.3; 
-        transform: scale(1); 
-        box-shadow: 0 0 0px rgba(255,255,255,0);
-    }
-    50% { 
-        opacity: 1; 
-        transform: scale(1.5); 
-        /* 별이 반짝일 때 살짝 빛 번짐 효과 추가 */
-        box-shadow: 0 0 10px rgba(255,255,255,0.8);
-    }
+.home .btn img, .home a img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.home .btn:hover, .home a:hover {
+    background: #81d4fa;
+    color: #090A0F;
+    box-shadow: 0 0 20px rgba(129, 212, 250, 0.6);
+    transform: translateY(-3px);
 }

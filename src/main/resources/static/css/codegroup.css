@@ -1,131 +1,134 @@
-/* 컨테이너 공통 스타일 */
+알겠습니다! 별들이 위아래로 미세하게 움직이던 translateY 속성을 모두 제거하여, 제자리에서 고정된 상태로 밝기만 예쁘게 반짝이도록 코드를 수정했습니다.
+
+이제 별들은 산만하게 움직이지 않고 밤하늘에 박힌 듯 고정되어 반짝일 것입니다. 버튼에 아이콘을 넣을 수 있는 설정까지 포함한 전체 코드입니다.
+
+🌌 제자리에서 반짝이는 대량의 별 + 네온 버튼 통합 코드
+CSS
+/* 1. 배경 설정: 짙은 우주 */ 
+body {
+    margin: 0;
+    padding: 0;
+    background: #050505; 
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 2. 대량의 별 레이어 (가상 요소 활용) */
+body::before, body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    z-index: -1;
+    /* 수많은 별들의 위치 정의 */
+    box-shadow: 
+        15vw 10vh #fff, 35vw 25vh #fff, 55vw 15vh #fff, 85vw 5vh #fff, 10vw 40vh #fff,
+        25vw 60vh #81d4fa, 45vw 85vh #fff, 65vw 50vh #fff, 95vw 70vh #fff, 5vw 90vh #fff,
+        12vw 15vh #fff, 32vw 45vh #fff, 52vw 75vh #81d4fa, 72vw 25vh #fff, 92vw 55vh #fff,
+        18vw 33vh #fff, 38vw 63vh #fff, 58vw 93vh #fff, 78vw 13vh #fff, 8vw 73vh #fff,
+        22vw 22vh #fff, 42vw 42vh #fff, 62vw 62vh #fff, 82vw 82vh #fff, 2vw 12vh #fff,
+        11vw 81vh #fff, 31vw 21vh #fff, 51vw 41vh #fff, 71vw 61vh #fff, 91vw 1vh #fff,
+        20vw 50vh #fff, 40vw 30vh #fff, 60vw 10vh #fff, 80vw 90vh #fff, 50vw 50vh #fff;
+    /* 제자리 반짝임 애니메이션 적용 */
+    animation: static_twinkle 4s infinite ease-in-out;
+}
+
+/* 두 번째 별 레이어 (속도만 다르게 설정) */
+body::after {
+    width: 1px;
+    height: 1px;
+    box-shadow: 
+        5vw 5vh #fff, 15vw 85vh #fff, 25vw 35vh #fff, 35vw 75vh #fff, 45vw 15vh #fff,
+        55vw 95vh #fff, 65vw 45vh #fff, 75vw 5vh #fff, 85vw 65vh #fff, 95vw 25vh #fff,
+        3vw 55vh #81d4fa, 13vw 25vh #fff, 23vw 95vh #fff, 33vw 45vh #fff, 43vw 15vh #fff,
+        53vw 65vh #fff, 63vw 35vh #fff, 73vw 85vh #fff, 83vw 5vh #fff, 93vw 75vh #fff;
+    animation: static_twinkle 6s infinite ease-in-out;
+    opacity: 0.6;
+}
+
+/* 3. 제자리 반짝임 애니메이션 (움직임 효과 제거됨) */
+@keyframes static_twinkle {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(1); /* 위치 이동(translate) 없이 크기만 유지 */
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2); /* 제자리에서 살짝 커지며 반짝임 */
+        filter: drop-shadow(0 0 5px white);
+    }
+}
+
+/* --- 컨테이너 및 UI 스타일 --- */
 .codegroup_list, .codegroup_modify, .codegroup_read, .codegroup_register {
     margin: 50px auto;
-    padding: 30px;
+    padding: 35px;
     width: 80%;
     max-width: 900px;
-    background: rgba(255, 255, 255, 0.05); /* 투명한 유리 효과 */
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    position: relative;
+    z-index: 10;
 }
 
 h2 {
     color: #81d4fa;
     text-shadow: 0 0 10px rgba(129, 212, 250, 0.5);
     margin-bottom: 30px;
-    font-weight: 600;
+    text-align: center;
 }
 
-/* 테이블 스타일링 */
 table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 10px; /* 행 사이 간격 */
-    margin-bottom: 20px;
+    border-spacing: 0 10px;
 }
 
 th {
     background: rgba(129, 212, 250, 0.2);
     color: #fff;
     padding: 15px;
-    border: none !important;
     text-transform: uppercase;
-    font-size: 0.9rem;
 }
 
 td {
     background: rgba(255, 255, 255, 0.03);
     padding: 15px;
-    border: none !important;
     color: #ddd;
-    transition: all 0.3s ease;
 }
 
-tr:hover td {
-    background: rgba(255, 255, 255, 0.08);
-    transform: scale(1.01);
-}
-
-/* 입력 폼(Input) 스타일 */
-input[type="text"], input[readonly] {
-    width: 100%;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(129, 212, 250, 0.3);
-    border-radius: 5px;
-    color: white;
-    outline: none;
-    transition: border 0.3s;
-}
-
-input[type="text"]:focus {
-    border-color: #81d4fa;
-    box-shadow: 0 0 10px rgba(129, 212, 250, 0.3);
-}
-
-input[readonly] {
-    background: rgba(255, 255, 255, 0.05);
-    color: #888;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* 버튼 스타일 (미래지향적 네온 버튼) */
+/* 버튼 스타일 (아이콘 정렬 포함) */
 button, .codegroup_list a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* 아이콘과 글자 사이 간격 */
     padding: 10px 25px;
-    margin: 5px;
-    border: none;
     border-radius: 50px;
     background: linear-gradient(45deg, #0288d1, #26c6da);
     color: white;
     font-weight: bold;
-    cursor: pointer;
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+button img, .codegroup_list a img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
 }
 
 button:hover, .codegroup_list a:hover {
     transform: translateY(-3px);
     box-shadow: 0 0 20px rgba(38, 198, 218, 0.6);
-    filter: brightness(1.1);
-}
-
-#btnRemove {
-    background: linear-gradient(45deg, #d32f2f, #ff5252);
-}
-
-/* 에러 메시지 */
-font[color="red"] {
-    font-size: 0.8rem;
-    color: #ff8a80 !important;
-    margin-left: 10px;
-}
-
-.star {
-    position: fixed;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.5;
-    animation-name: twinkle;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-    /* 추가: 기본값을 설정해두거나, 스크립트가 준 값을 확실히 받도록 합니다 */
-    animation-duration: inherit; 
-    z-index: -1; 
-    pointer-events: none;
-}
-
-@keyframes twinkle {
-    0%, 100% { 
-        opacity: 0.3; 
-        transform: scale(1); 
-    }
-    50% { 
-        opacity: 1; 
-        transform: scale(1.5); 
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* 빛 번짐 추가 */
-    }
 }
