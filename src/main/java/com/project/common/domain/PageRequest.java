@@ -94,4 +94,11 @@ public class PageRequest {
 
 		return uriComponents.toUriString();
 	}
+
+	public String toUriStringByPage() {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+				.queryParam("sizePerPage", this.sizePerPage).build();
+		
+		return uriComponents.toUriString();
+	}
 }

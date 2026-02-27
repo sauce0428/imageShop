@@ -23,6 +23,17 @@
 		<h2>
 			<spring:message code="user.header.list" />
 		</h2>
+		<form:form modelAttribute="pgrq" method="get"
+			action="/board/list${pgrq.toUriStringByPage()}">
+			<form:select path="searchType" items="${searchTypeCodeValueList}"
+				itemValue="value" itemLabel="label" />
+
+			<form:input path="keyword" />
+			<button id='searchBtn'>
+				<spring:message code="action.search" />
+			</button>
+		</form:form>
+		
 		<sec:authorize access="hasRole('ROLE_MEMBER')">
 			<a href="/board/register"><spring:message code="action.new" /></a>
 		</sec:authorize>
@@ -46,8 +57,8 @@
 					<c:forEach items="${list}" var="board">
 						<tr>
 							<td align="center">${board.boardNo}</td>
-							<td align="left">
-							<a href='/board/read${pagination.makeQuery(pagination.pageRequest.page)}&boardNo=${board.boardNo}'>${board.title}</a>
+							<td align="left"><a
+								href='/board/read${pgrq.toUriString(pgrq.page)}&boardNo=${board.boardNo}'>${board.title}</a>
 							<td align="right">${board.writer}</td>
 							<td align="center"><fmt:formatDate
 									pattern="yyyy-MM-dd HH:mm" value="${board.regDate}" /></td>
@@ -59,21 +70,25 @@
 		<div>
 			<!-- 페이징 네비게이션 -->
 			<div>
-				<c:if test="${pagination.prev}">
-					<!--  ?page=3&perPageNum=10 -->
-					<a href="/board/list${pagination.makeQuery(pagination.startPage - 1)}">&laquo;</a>
-				</c:if>
-				<c:forEach begin="${pagination.startPage }" end="${pagination.endPage }" var="idx">
-					<c:if test="${pagination.pageRequest.page eq idx}">
-						<a href="/board/list${pagination.makeQuery(idx)}">[${idx}]</a>
-					</c:if>
-					<c:if test="${!(pagination.pageRequest.page eq idx)}">
-						<a href="/board/list${pagination.makeQuery(idx)}">${idx}</a>
-					</c:if>
-				</c:forEach>
-				<c:if test="${pagination.next && pagination.endPage > 0}">
-					<a href="/board/list${pagination.makeQuery(pagination.endPage +1)}">&raquo;</a>
-				</c:if>
+				<c:if test="${empty pgrq.keyword}">
+                <c:if test="${pagination.prev}">
+                    <!-- ?page=3&sizePerPage=10" -->
+                    <a
+                        href="/board/list${pagination.makeQuery(pagination.startPage - 1)}">&laquo;</a>
+                </c:if>
+                <c:forEach begin="${pagination.startPage }"
+                    end="${pagination.endPage }" var="idx">
+                    <c:if test="${pagination.pageRequest.page eq idx}">
+                        <a href="/board/list${pagination.makeQuery(idx)}">[${idx}]</a>
+                    </c:if>
+                    <c:if test="${!(pagination.pageRequest.page eq idx)}">
+                        <a href="/board/list${pagination.makeQuery(idx)}">${idx}</a>
+                    </c:if>
+                </c:forEach>
+                <c:if test="${pagination.next && pagination.endPage > 0}">
+                    <a href="/board/list${pagination.makeQuery(pagination.endPage +1)}">&raquo;</a>
+                </c:if>
+            </c:if>
 			</div>
 		</div>
 	</div>

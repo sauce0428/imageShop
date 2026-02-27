@@ -50,7 +50,7 @@
 	<select id="list" resultType="Board"> 
 	<![CDATA[ 
 		SELECT board_no, title, content, writer, reg_date
-		FROM (select board_no, title, content, writer, reg_date, rownum as rnum from board)
+		FROM (select board_no, title, content, writer, reg_date, rownum as rnum from board order by board_no DESC)
 		where board_no > 0 and rnum between #{sizePerPage}*#{page}-9 and #{sizePerPage}*#{page}
 	]]>
 		<include refid="search"></include>
