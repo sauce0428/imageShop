@@ -12,6 +12,8 @@
    <sec:authorize access="!isAuthenticated()"> 
    			<!-- 회원 게시판 리스트 --> 
             <td width="120"><a href="/board/list">회원게시판리스트</a></td>
+            <!-- 공지사항을 메뉴에 추가한다. --> 
+			   <td width="120"><a href="/notice/list"><spring:message code="menu.notice.member" /></a></td>
    </sec:authorize> 
 
    <!-- 인증을 했을때 메뉴(인가: 관리자, 회원, 메니저)  --> 
@@ -21,17 +23,23 @@
                 <!-- 코드그룹관리메뉴 --> 
                <td width="20%"><a href="/codegroup/list"><spring:message code="menu.codegroup.list" /></a></td> 
                <!-- 코드관리메뉴 --> 
-               <td width="20%"><a href="/codedetail/list"><spring:message code="menu.codedetail.list" /></a></td>
+               <td width="10%"><a href="/codedetail/list"><spring:message code="menu.codedetail.list" /></a></td>
                 <!-- 회원 관리 메뉴 --> 
                <td width="20%"><a href="/user/list"><spring:message code="menu.user.admin" /></a></td>
                <!-- 회원 게시판 리스트 --> 
-               <td width="120"><a href="/board/list">회원게시판리스트</a></td>
+               <td width="20%"><a href="/board/list">회원게시판리스트</a></td>
+               <!-- 공지사항을 메뉴에 추가한다. --> 
+			   <td width="120"><a href="/notice/list"><spring:message code="menu.notice.member" /></a></td>
            </sec:authorize> 
 
            <!-- 인증완료, (인가: 회원)일때 들어갈 메뉴  --> 
            <sec:authorize access="hasRole('ROLE_MEMBER')">
+           	   <!-- 공지사항을 메뉴에 추가한다. --> 
+			   <td width="120"><a href="/board/register">게시물등록</a></td>
                <!-- 회원 게시판 리스트 --> 
                <td width="120"><a href="/board/list">회원게시판리스트</a></td>
+               <!-- 공지사항을 메뉴에 추가한다. --> 
+			   <td width="120"><a href="/notice/list"><spring:message code="menu.notice.member" /></a></td>
            </sec:authorize> 
 
    </sec:authorize> 

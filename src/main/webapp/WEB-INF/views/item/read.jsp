@@ -20,59 +20,72 @@
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 	<div align="center">
 		<h2>
-			<spring:message code="board.header.register" />
+			<spring:message code="notice.header.read" />
 		</h2>
-		<form:form modelAttribute="board" action="/board/register"
-			method="post">
+		<form:form modelAttribute="notice">
+			<form:hidden path="noticeNo" />
 			<table>
 				<tr>
-					<td><spring:message code="board.title" /></td>
-					<td><form:input path="title" /></td>
+					<td><spring:message code="notice.title" /></td>
+					<td><form:input path="title" readonly="true" /></td>
 					<td><font color="red"><form:errors path="title" /></font></td>
 				</tr>
 				<tr>
-					<td><spring:message code="board.writer" /></td>
-					<td><form:input path="writer" readonly="true" /></td>
-					<td><font color="red"><form:errors path="writer" /></font></td>
-				</tr>
-				<tr>
-					<td><spring:message code="board.content" /></td>
-					<td><form:textarea path="content" /></td>
+					<td><spring:message code="notice.content" /></td>
+					<td><form:textarea path="content" readonly="true" /></td>
 					<td><font color="red"><form:errors path="content" /></font></td>
 				</tr>
 			</table>
+
 		</form:form>
 
 		<div>
-			<sec:authorize access="isAuthenticated()">
-			<button type="submit" id="btnRegister">
-				<spring:message code="action.register" />
-			</button>
-			</sec:authorize>
-				<button type="submit" id="btnList">
-					<spring:message code="action.list" />
+			<!-- 사용자정보를 가져온다. -->
+			<sec:authentication property="principal" var="principal" />
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<button type="submit" id="btnEdit">
+					<spring:message code="action.edit" />
 				</button>
+				<button type="submit" id="btnRemove">
+					<spring:message code="action.remove" />
+				</button>
+			</sec:authorize>
+
+
+			<button type="submit" id="btnList">
+				<spring:message code="action.list" />
+			</button>
 		</div>
 	</div>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
-		<!-- $(document).ready(function() : html 코드가 document로 객체가 완료 -->
-		$(document).ready(function() {
-			<!-- form 객체찾기  -->
-			let formObj = $("#board");
-			<!-- $("#btnRegister").on("click", function() : 등록버튼을 클릭할때 작동하는 핸들러정의 -->
-			$("#btnRegister").on("click", function() {
-				<!-- action="/codedetail/register" method="get" 서버로 전송 -->
-				formObj.submit();
-			});
-			<!-- $("#btnList").on("click", function() { : 목록버튼을 클릭할때 작동하는 핸들러정의 -->
-			$("#btnList").on("click", function() {
-				<!-- 서버에 페이지요청 http://localhost:8080/codedetail/list -->
-				self.location = "/board/list";
-			});
-		});
+		$(document).ready(
+				function() {
+					let formObj = $("#notice");
+
+					$("#btnEdit").on(
+							"click",
+							function() {
+								let noticeNo = $("#noticeNo").val();
+								self.location = "/notice/modify?noticeNo=" + noticeNo;
+							});
+
+					$("#btnRemove").on(
+							"click",
+							function() {
+								let noticeNo = $("#noticeNo").val();
+								self.location = "/notice/remove?noticeNo=" + noticeNo;
+							});
+
+					$("#btnList").on(
+							"click",
+							function() {
+								self.location = "/notice/list";
+							});
+
+				});
 	</script>
 	<script>
 		const starsCount = 300; // 별 수 증가
@@ -86,13 +99,6 @@
 			star.style.animationDuration = (Math.random() * 3 + 2) + "s";
 			star.style.animationDelay = Math.random() * 5 + "s";
 			document.body.appendChild(star);
-		}
-
-		var result = "${msg}";
-		if (result === "SUCCESS") {
-			alert("<spring:message code='common.processSuccess' />");
-		} else if (result === "FAIL") {
-			alert("삭제처리 실패");
 		}
 	</script>
 </body>
