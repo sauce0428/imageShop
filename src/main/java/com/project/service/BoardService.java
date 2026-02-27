@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 
+import com.project.common.domain.PageRequest;
 import com.project.domain.Board;
-import com.project.domain.PageRequest;
 
 public interface BoardService {
 
@@ -20,8 +20,9 @@ public interface BoardService {
 	public int modify(Board board) throws Exception;
 
 	public int remove(Board board) throws Exception;
+
+	public int count(PageRequest pageRequest) throws Exception;
 	
-	public int count() throws Exception;
 
 
 }

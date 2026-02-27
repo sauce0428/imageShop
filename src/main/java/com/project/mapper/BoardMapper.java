@@ -2,8 +2,8 @@ package com.project.mapper;
 
 import java.util.List;
 
+import com.project.common.domain.PageRequest;
 import com.project.domain.Board;
-import com.project.domain.PageRequest;
 
 public interface BoardMapper {
 
@@ -19,6 +19,6 @@ public interface BoardMapper {
 
 	public int remove(Board board) throws Exception;
 
-	public int count() throws Exception;
+	public int count(PageRequest pageRequest) throws Exception;
 	
 }

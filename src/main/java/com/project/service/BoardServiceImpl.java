@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.common.domain.PageRequest;
 import com.project.domain.Board;
-import com.project.domain.PageRequest;
 import com.project.mapper.BoardMapper;
 
 @Service
@@ -49,8 +49,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int count() throws Exception {
-		return mapper.count();
+	public int count(PageRequest pageRequest) throws Exception {
+		return mapper.count(pageRequest);
 	}
 
 }

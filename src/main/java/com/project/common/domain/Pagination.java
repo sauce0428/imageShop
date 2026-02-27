@@ -1,4 +1,4 @@
-package com.project.domain;
+package com.project.common.domain;
 
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
