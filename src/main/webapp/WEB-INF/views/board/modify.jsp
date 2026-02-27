@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Image Shop</title>
-<link rel="stylesheet" href="/css/user.css">
+<link rel="stylesheet" href="/css/codegroup.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -25,7 +25,6 @@
 
 		<form:form modelAttribute="board" action="/board/modify" method="post">
 			<form:hidden path="boardNo" />
-			!-- 현재 페이지 번호와 페이징 크기를 숨겨진 필드 요소를 사용하여 전달한다. --> 
  			<input type="hidden" id="page" name="page" value="${pgrq.page}">
 			<input type="hidden" id="sizePerPage" name="sizePerPage" value="${pgrq.sizePerPage}">
 			<table>

@@ -94,17 +94,23 @@ public class ItemController {
 	public ResponseEntity<byte[]> displayFile(Item item) throws Exception {
 		InputStream in = null;
 		ResponseEntity<byte[]> entity = null;
+		// 썸네일 이미지 파일명을 DB로부터 가져온다.
 		String fileName = itemService.getPreview(item);
 		try {
+			// jpg 확장자명을 가져온다.
 			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
-
+			// jpg 미디어타입을 리턴받는다.
 			MediaType mType = getMediaType(formatName);
+			// HttpHeaders는 서버가 브라우저에게 정보를 담아서 보내주는 객체
 			HttpHeaders headers = new HttpHeaders();
+			// 파일을 읽는다. InputStream(바이트단위로 읽는다)
+			// D:/upload/
 			in = new FileInputStream(uploadPath + File.separator + fileName);
 
 			if (mType != null) {
 				headers.setContentType(mType);
 			}
+			// 전송 json 방식
 			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,6 +118,7 @@ public class ItemController {
 		} finally {
 			in.close();
 		}
+		// 웹 브라우저에게 바이트단위로 이미지를 전송한다.
 		return entity;
 	}
 
@@ -158,5 +165,15 @@ public class ItemController {
 			in.close();
 		}
 		return entity;
+	}
+
+	// 상품 수정 페이지
+	@GetMapping("/modify")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String modifyForm(Item item, Model model) throws Exception {
+		
+		model.addAttribute(itemService.read(item));
+
+		return "item/modify";
 	}
 }

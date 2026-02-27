@@ -28,4 +28,16 @@
 		SELECT picture_url FROM item
 		WHERE item_id = #{itemId}
 	</select>
+
+	<!-- 상품 상세 조회 -->
+	<select id="read" resultType="Item">
+		SELECT item_id,
+		item_name,
+		price,
+		description,
+		picture_url,
+		preview_url
+		FROM item
+		WHERE item_id = #{itemId}
+	</select>
 </mapper>

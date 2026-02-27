@@ -20,82 +20,89 @@
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 	<div align="center">
 		<h2>
-			<spring:message code="notice.header.read" />
+			<spring:message code="item.header.modify" />
 		</h2>
-		<form:form modelAttribute="notice" action="/notice/modify" method="post">
-			<form:hidden path="noticeNo" />
+		<form:form modelAttribute="item" action="/item/modify"
+			enctype="multipart/form-data">
+			<form:hidden path="itemId" />
+			<form:hidden path="pictureUrl" />
+			<form:hidden path="previewUrl" />
+
 			<table>
 				<tr>
-					<td><spring:message code="notice.title" /></td>
-					<td><form:input path="title" /></td>
-					<td><font color="red"><form:errors path="title" /></font></td>
+					<td><spring:message code="item.itemName" /></td>
+					<td><form:input path="itemName" /></td>
+					<td><font color="red"><form:errors path="itemName" /></font></td>
 				</tr>
 				<tr>
-					<td><spring:message code="notice.content" /></td>
-					<td><form:textarea path="content" /></td>
-					<td><font color="red"><form:errors path="content" /></font></td>
+					<td><spring:message code="item.itemPrice" /></td>
+					<td><form:input path="price" />&nbsp;원</td>
+					<td><font color="red"><form:errors path="price" /></font></td>
+				</tr>
+				<tr>
+					<td><spring:message code="item.picture" /></td>
+					<td><img src="picture?itemId=${item.itemId}" width="210"></td>
+				</tr>
+				<tr>
+					<td><spring:message code="item.preview" /></td>
+					<td><img src="display?itemId=${item.itemId}" width="210"></td>
+				</tr>
+				<tr>
+					<td><spring:message code="item.itemFile" /></td>
+					<td><input type="file" name="picture" /></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><spring:message code="item.itemPreviewFile" /></td>
+					<td><input type="file" name="preview" /></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><spring:message code="item.itemDescription" /></td>
+					<td><form:textarea path="description" /></td>
+					<td><font color="red"><form:errors path="description" /></font></td>
 				</tr>
 			</table>
-
 		</form:form>
-
 		<div>
-			<!-- 사용자정보를 가져온다. -->
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<button type="submit" id="btnModify">
-					<spring:message code="action.modify" />
-				</button>
+			<button type="submit" id="btnModify">
+				<spring:message code="action.modify" />
+			</button>
 			</sec:authorize>
-
-
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
 			</button>
 		</div>
-	</div>
-
-	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
-	<script>
-		$(document).ready(
-				function() {
-					let formObj = $("#notice");
-
-					$("#btnModify").on(
-							"click",
-							function() {
-								formObj.submit();
-							});
-
-					$("#btnRemove").on(
-							"click",
-							function() {
-								let noticeNo = $("#noticeNo").val();
-								self.location = "/notice/remove?noticeNo=" + noticeNo;
-							});
-
-					$("#btnList").on(
-							"click",
-							function() {
-								self.location = "/notice/list";
-							});
-
+		</div>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+		<script>
+			$(document).ready(function() {
+				var formObj = $("#item");
+				$("#btnModify").on("click", function() {
+					formObj.submit();
 				});
-	</script>
-	<script>
-		const starsCount = 300; // 별 수 증가
-		for (let i = 0; i < starsCount; i++) {
-			const star = document.createElement("div");
-			star.className = "star";
-			star.style.top = Math.random() * window.innerHeight + "px";
-			star.style.left = Math.random() * window.innerWidth + "px";
-			star.style.width = star.style.height = (Math.random() * 2 + 1)
-					+ "px";
-			star.style.animationDuration = (Math.random() * 3 + 2) + "s";
-			star.style.animationDelay = Math.random() * 5 + "s";
-			document.body.appendChild(star);
-		}
-		
-	</script>
+
+				$("#btnList").on("click", function() {
+					self.location = "list";
+				});
+
+			});
+		</script>
+
+		<script>
+			const starsCount = 300; // 별 수 증가
+			for (let i = 0; i < starsCount; i++) {
+				const star = document.createElement("div");
+				star.className = "star";
+				star.style.top = Math.random() * window.innerHeight + "px";
+				star.style.left = Math.random() * window.innerWidth + "px";
+				star.style.width = star.style.height = (Math.random() * 2 + 1)
+						+ "px";
+				star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+				star.style.animationDelay = Math.random() * 5 + "s";
+				document.body.appendChild(star);
+			}
+		</script>
 </body>
 </html>
