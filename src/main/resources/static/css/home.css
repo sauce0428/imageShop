@@ -59,13 +59,17 @@ body::after {
     }
 }
 
-/* 4. 홈 화면 스타일 */
+/* 4. 홈 화면 스타일 수정 */
 .home {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* height: 100vh; -> 제거: 화면을 꽉 채우지 않음 */
+    /* justify-content: center; -> 제거: 중앙으로 강제 이동시키지 않음 */
+    
+    margin-top: 100px; /* 👈 메뉴바 높이에 맞춰 적절한 간격을 숫자로 고정 */
+    margin-bottom: 50px;
+    
     text-align: center;
     position: relative;
     z-index: 10;
