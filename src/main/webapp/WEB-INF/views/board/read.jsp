@@ -76,34 +76,99 @@
 			</button>
 		</div>
 	</div>
+	
+	<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="pinfo" />
+		</sec:authorize>
+
+	<!-- 댓글 보기 -->
+	<div class="reply_view">
+		<table>
+			<c:choose>
+				<c:when test="${empty replyList}">
+					<tr>
+						<td colspan="4">여러분의 소중한 댓글을 남겨주세요.</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${replyList}" var="reply">
+						<tr>
+							<td align="center">${reply.member.userId}</td>
+							<td align="center">${reply.content}</td>
+							<td align="center"><fmt:formatDate
+									pattern="yyyy-MM-dd HH:mm" value="${reply.regDate}" /></td>
+
+							<sec:authorize access="isAuthenticated()">
+								<c:if test="${pinfo.username eq reply.member.userId}">
+									<td>
+										<form action="/reply/remove" method="post"
+											style="display: inline;">
+											<input type="hidden" name="replyNo" value="${reply.replyNo}">
+											<input type="hidden" name="boardNo" value="${board.boardNo}">
+											<button type="submit" id="btnRemove"
+												onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+										</form>
+									</td>
+								</c:if>
+							</sec:authorize>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</table>
+	</div>
+
+	<sec:authorize access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')">
+		<div class="reply_register">
+			<form action="/reply/replyRegister" method="get">
+				<input type="hidden" name="username" value="${pinfo.username}" /> <input
+					type="hidden" name="boardNo" value="${board.boardNo}" /> <label
+					for="reply_content">댓글작성</label>
+				<textarea id="reply_content" name="content"></textarea>
+				<button type="submit">댓글작성</button>
+			</form>
+		</div>
+	</sec:authorize>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
-		$(document).ready(function() {
-			let formObj = $("#board");
+		$(document).ready(
+				function() {
+					let formObj = $("#board");
 
-			$("#btnEdit").on("click", function() {
-				let boardNo = $("#boardNo").val();
-				let page = $("#page").val(); 
-        		let sizePerPage = $("#sizePerPage").val(); 
-        		self.location = "/board/modify?page=" + page+ "&sizePerPage=" + sizePerPage+ "&boardNo=" + boardNo;
-			});
+					$("#btnEdit").on(
+							"click",
+							function() {
+								let boardNo = $("#boardNo").val();
+								let page = $("#page").val();
+								let sizePerPage = $("#sizePerPage").val();
+								self.location = "/board/modify?page=" + page
+										+ "&sizePerPage=" + sizePerPage
+										+ "&boardNo=" + boardNo;
+							});
 
-			$("#btnRemove").on("click", function() {
-				let boardNo = $("#boardNo").val();
-				let page = $("#page").val(); 
-        		let sizePerPage = $("#sizePerPage").val();
-				self.location = "/board/remove?page=" + page+ "&sizePerPage=" + sizePerPage+ "&boardNo=" + boardNo;
-			});
+					$("#btnRemove").on(
+							"click",
+							function() {
+								let boardNo = $("#boardNo").val();
+								let page = $("#page").val();
+								let sizePerPage = $("#sizePerPage").val();
+								self.location = "/board/remove?page=" + page
+										+ "&sizePerPage=" + sizePerPage
+										+ "&boardNo=" + boardNo;
+							});
 
-			$("#btnList").on("click", function() {
-				let page = $("#page").val(); 
-        		let sizePerPage = $("#sizePerPage").val();
-        		self.location = "/board/list?page=" + page+ "&sizePerPage=" + sizePerPage;
-			});
+					$("#btnList").on(
+							"click",
+							function() {
+								let page = $("#page").val();
+								let sizePerPage = $("#sizePerPage").val();
+								self.location = "/board/list?page=" + page
+										+ "&sizePerPage=" + sizePerPage;
+							});
 
-		});
+				});
 	</script>
 	<script>
 		const starsCount = 300; // 별 수 증가

@@ -643,3 +643,156 @@ button:active {
     transform: scale(0.95);
 }
 
+.reply_view {
+	width: 80%; max-width: 900px; margin: 20px auto; padding: 20px;
+	background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+	border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reply_view td { padding: 15px; color: #ddd; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+.reply_register {
+	width: 80%; max-width: 900px; margin: 20px auto 100px; padding: 30px;
+	background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+	border-radius: 20px; border: 1px solid rgba(129, 212, 250, 0.3);
+}
+
+.reply_register label { color: #81d4fa; font-weight: bold; display: block; margin-bottom: 10px; }
+.reply_register textarea { height: 80px; margin-bottom: 10px; resize: none; }
+
+/* 댓글 전송 버튼 - 본문의 btnEdit 계열 스타일 적용 */
+.reply_register button {
+	background: linear-gradient(45deg, rgba(2, 136, 209, 0.2), rgba(38, 198, 218, 0.4));
+	border-color: #00d2ff; float: right;
+}
+.reply_register::after { content: ""; display: block; clear: both; }
+
+/* 댓글 내 삭제 버튼 - 본문의 btnRemove 계열 스타일 적용 */
+.reply_view button {
+	background: rgba(211, 47, 47, 0.2); border-color: #ff1744;
+	padding: 5px 15px; font-size: 12px;
+}
+</style>
+</head>
+<body>
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
+	
+	<div align="center">
+		<h2><spring:message code="board.header.read" /></h2>
+
+		<form:form modelAttribute="board">
+			<form:hidden path="boardNo" />
+			<input type="hidden" id="page" name="page" value="${pgrq.page}">
+			<input type="hidden" id="sizePerPage" name="sizePerPage" value="${pgrq.sizePerPage}">
+			<table>
+				<tr>
+					<td><spring:message code="board.title" /></td>
+					<td><form:input path="title" readonly="true" /></td>
+					<td><font color="red"><form:errors path="title" /></font></td>
+				</tr>
+				<tr>
+					<td><spring:message code="board.writer" /></td>
+					<td><form:input path="writer" readonly="true" /></td>
+					<td><font color="red"><form:errors path="writer" /></font></td>
+				</tr>
+				<tr>
+					<td><spring:message code="board.content" /></td>
+					<td><form:textarea path="content" readonly="true" /></td>
+					<td><font color="red"><form:errors path="content" /></font></td>
+				</tr>
+			</table>
+		</form:form>
+
+		<div>
+			<sec:authentication property="principal" var="principal" />
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<button type="button" id="btnEdit"><spring:message code="action.edit" /></button>
+				<button type="button" id="btnRemove"><spring:message code="action.remove" /></button>
+			</sec:authorize>
+
+			<sec:authorize access="hasRole('ROLE_MEMBER')">
+				<c:if test="${principal.username eq board.writer}">
+					<button type="button" id="btnEdit"><spring:message code="action.edit" /></button>
+					<button type="button" id="btnRemove"><spring:message code="action.remove" /></button>
+				</c:if>
+			</sec:authorize>
+
+			<button type="button" id="btnList"><spring:message code="action.list" /></button>
+		</div>
+	</div>
+	
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal" var="pinfo" />
+	</sec:authorize>
+
+	<div class="reply_view">
+		<table>
+			<c:choose>
+				<c:when test="${empty replyList}">
+					<tr>
+						<td colspan="4" align="center" style="opacity: 0.5; padding: 20px;">여러분의 소중한 댓글을 남겨주세요. 🌌</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${replyList}" var="reply">
+						<tr>
+							<td width="120" align="center" style="color: #81d4fa;">${reply.member.userId}</td>
+							<td>${reply.content}</td>
+							<td width="150" align="center" style="font-size: 12px; color: #888;">
+								<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${reply.regDate}" />
+							</td>
+							<sec:authorize access="isAuthenticated()">
+								<c:if test="${pinfo.username eq reply.member.userId}">
+									<td width="80" align="center">
+										<form action="/reply/remove" method="post" style="display: inline;">
+											<input type="hidden" name="replyNo" value="${reply.replyNo}">
+											<input type="hidden" name="boardNo" value="${board.boardNo}">
+											<button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+										</form>
+									</td>
+								</c:if>
+							</sec:authorize>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</table>
+	</div>
+
+	<sec:authorize access="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')">
+		<div class="reply_register">
+			<form action="/reply/replyRegister" method="get">
+				<input type="hidden" name="username" value="${pinfo.username}" /> 
+				<input type="hidden" name="boardNo" value="${board.boardNo}" /> 
+				<label for="reply_content">💬 COMM_LOG : 댓글 작성</label>
+				<textarea id="reply_content" name="content" placeholder="우주로 메시지를 전송하세요..."></textarea>
+				<button type="submit">댓글전송</button>
+			</form>
+		</div>
+	</sec:authorize>
+
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
+	<script>
+		$(document).ready(function() {
+			$("#btnEdit").on("click", function() {
+				let boardNo = $("#boardNo").val();
+				let page = $("#page").val();
+				let sizePerPage = $("#sizePerPage").val();
+				self.location = "/board/modify?page=" + page + "&sizePerPage=" + sizePerPage + "&boardNo=" + boardNo;
+			});
+			$("#btnRemove").on("click", function() {
+				let boardNo = $("#boardNo").val();
+				let page = $("#page").val();
+				let sizePerPage = $("#sizePerPage").val();
+				self.location = "/board/remove?page=" + page + "&sizePerPage=" + sizePerPage + "&boardNo=" + boardNo;
+			});
+			$("#btnList").on("click", function() {
+				let page = $("#page").val();
+				let sizePerPage = $("#sizePerPage").val();
+				self.location = "/board/list?page=" + page + "&sizePerPage=" + sizePerPage;
+			});
+		});
+		
+		

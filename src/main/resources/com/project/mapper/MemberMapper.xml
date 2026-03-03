@@ -84,4 +84,9 @@
 	<select id="countAll" resultType="int">
 		SELECT count(*) FROM member
 	</select>
+	
+	<!-- 댓글작성번호 -->
+	<select id="readByNo">
+		SELECT user_no FROM MEMBER WHERE user_id = #{username}
+	</select>
 </mapper>
