@@ -9,5 +9,6 @@ public class ChargeCoin {
 	private int historyNo; 
 	private int userNo; 
 	private int amount; 
+	private String itemName;
 	private Date regDate;
 }

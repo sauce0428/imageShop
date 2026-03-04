@@ -50,6 +50,7 @@ public class CoinController {
 		int userNo = member.getUserNo();
 
 		chargeCoin.setUserNo(userNo);
+		chargeCoin.setItemName("코인 충전");
 		int count = service.charge(chargeCoin);
 		if (count != 0) {
 			rttr.addFlashAttribute("msg", "충전이 완료되었습니다.");
