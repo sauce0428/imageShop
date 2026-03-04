@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.project.common.security.domain.CustomUser;
 import com.project.domain.Member;
 import com.project.domain.UserItem;
+import com.project.exception.NotMyItemException;
 import com.project.service.UserItemService;
 
 @Controller
@@ -50,27 +51,33 @@ public class UserItemController {
 		model.addAttribute(service.read(userItem));
 	}
 
-	// 서버 외장하드에 있는 이미지를 사용자에게 상품 다운 로드해서 로컬컴퓨터에 저장한다. 
+	// 서버 외장하드에 있는 이미지를 사용자에게 상품 다운 로드해서 로컬컴퓨터에 저장한다.
 	@ResponseBody
 	@RequestMapping("/download")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')")
 	public ResponseEntity<byte[]> download(UserItem _userItem, Authentication authentication) throws Exception {
 		UserItem userItem = service.read(_userItem);
+		// 구매한 상품이 사용자의 것인지 체크한다.
+		CustomUser customUser = (CustomUser) authentication.getPrincipal();
+		Member member = customUser.getMember();
+		if (userItem.getUserNo() != member.getUserNo()) {
+			throw new NotMyItemException("이것은 나의 구매 상품이 아니다.");
+		}
 		String fullName = userItem.getPictureUrl();
-		
+
 		InputStream in = null;
 		ResponseEntity<byte[]> entity = null;
 
 		try {
 			HttpHeaders headers = new HttpHeaders();
-			
+
 			in = new FileInputStream(uploadPath + File.separator + fullName);
-			//949edc25-85e5-4ade-9736-544c99ea2a6e_kitten-3.jpg => kitten-3.jpg
+			// 949edc25-85e5-4ade-9736-544c99ea2a6e_kitten-3.jpg => kitten-3.jpg
 			String fileName = fullName.substring(fullName.indexOf("_") + 1);
 
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-			headers.add("Content-Disposition","attachment;filename=\"" 
-					+ new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\"");
+			headers.add("Content-Disposition",
+					"attachment;filename=\"" + new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\"");
 
 			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -81,5 +88,11 @@ public class UserItemController {
 		}
 
 		return entity;
+	}
+
+	// 본인 상품 예외 처리
+	@GetMapping("/notMyItem")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')")
+	public void notMyItem(Model model) throws Exception {
 	}
 }

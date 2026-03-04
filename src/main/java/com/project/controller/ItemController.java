@@ -301,7 +301,11 @@ public class ItemController {
 	@GetMapping("/read")
 	public String read(Item item, Model model) throws Exception {
 		Item _item = itemService.read(item);
-		model.addAttribute(_item);
+		if (item != null) {
+			model.addAttribute("item", _item);
+		} else {
+			throw new Exception("에러발생");
+		}
 		return "item/read";
 	}
 }
