@@ -13,4 +13,6 @@ public interface ReplyService {
 
 	public List<Reply> list(Board board) throws Exception;
 
+	public void modify(Reply reply) throws Exception;
+
 }

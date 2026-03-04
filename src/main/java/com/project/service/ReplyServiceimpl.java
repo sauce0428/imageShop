@@ -31,4 +31,9 @@ public class ReplyServiceimpl implements ReplyService {
 		return mapper.list(board);
 	}
 
+	@Override
+	public void modify(Reply reply) throws Exception {
+		mapper.update(reply);
+	}
+
 }
