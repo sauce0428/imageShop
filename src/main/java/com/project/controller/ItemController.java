@@ -185,25 +185,38 @@ public class ItemController {
 		}
 		return entity;
 	}
-/*
+
 	// 상품 구매 요청을 처리한다.
 	@PostMapping("/buy")
 	@PreAuthorize("hasRole('ROLE_MEMBER', 'ROLE_ADMIN')")
-	public String buy(int itemId, RedirectAttributes rttr, Authentication authentication) throws Exception {
+	public String buy(Item item, RedirectAttributes rttr, Authentication authentication) throws Exception {
 		//인증된 사용자 정보를 가져오고 
 		CustomUser customUser = (CustomUser) authentication.getPrincipal();
 		Member member = customUser.getMember();
-		int userNo = member.getUserNo();
-		member.setCoin(memberService.getCoin(userNo));
+		
+		//해당되는 회원코인정보를 가져와서 저장한다.
+		member.setCoin(memberService.getCoin(member));
 
 		Item _item = itemService.read(item);
-		userItemService.register(member, item);
-		String message = messageSource.getMessage("item.purchaseComplete", null, Locale.KOREAN);
-		rttr.addFlashAttribute("msg", message);
-
+		
+		//장바구니생성
+		int count = userItemService.register(member, item);
+		
+		//String message = messageSource.getMessage("item.purchaseComplete", null, Locale.KOREAN);
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "구매 완료");
+		} else {
+			rttr.addFlashAttribute("msg", "구매 실패");
+		}
 		return "redirect:/item/success";
 	}
-*/
+	
+	// 상품 구매 성공 페이지를 표시한다. 
+	@GetMapping("/success") 
+	public String success() throws Exception { 
+	return "item/success"; 
+	}
+
 	// 상품 수정 페이지
 	@GetMapping("/modify")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")

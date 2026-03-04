@@ -99,4 +99,9 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.readByNo(username);
 	}
 
+	@Override
+	public int getCoin(Member member) throws Exception {
+		return mapper.getCoin(member);
+	}
+
 }
