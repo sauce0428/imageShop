@@ -52,4 +52,11 @@ public class ReplyController {
 		}
 		return "redirect:/board/read?boardNo=" + reply.getBoardNo();
 	}
+	
+	@PostMapping("/modify")
+	@PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
+	public String repliesUpdate(Reply reply) throws Exception {
+		service.modify(reply);
+		return "redirect:/board/read?boardNo=" + reply.getBoardNo();
+	}
 }
