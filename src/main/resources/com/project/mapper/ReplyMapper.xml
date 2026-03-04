@@ -39,4 +39,8 @@
 	<delete id="remove">
 		DELETE FROM Reply WHERE reply_no = #{replyNo}
 	</delete>
+	
+	<update id="update">
+		UPDATE REPLY SET CONTENT = #{content} WHERE reply_no = #{replyNo}
+	</update>
 </mapper>
