@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -23,7 +22,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -188,7 +186,7 @@ public class ItemController {
 
 	// 상품 구매 요청을 처리한다.
 	@PostMapping("/buy")
-	@PreAuthorize("hasRole('ROLE_MEMBER', 'ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')")
 	public String buy(Item item, RedirectAttributes rttr, Authentication authentication) throws Exception {
 		//인증된 사용자 정보를 가져오고 
 		CustomUser customUser = (CustomUser) authentication.getPrincipal();

@@ -3,8 +3,8 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mapper.CoinMapper">
 	<insert id="create">
-		INSERT INTO charge_coin_history(history_no, user_no, amount)
-		VALUES(charge_coin_history_seq.NEXTVAL, #{userNo}, #{amount})
+		INSERT INTO charge_coin_history(history_no, user_no, item_name, amount)
+		VALUES(charge_coin_history_seq.NEXTVAL, #{userNo}, #{itemName}, #{amount})
 	</insert>
 
 	<update id="charge">
@@ -24,8 +24,8 @@
 	</update>
 	<!-- 구매 내역 등록 -->
 	<insert id="createPayHistory">
-		INSERT INTO pay_coin_history(history_no, user_no, item_id, amount)
-		VALUES(pay_coin_history_seq.NEXTVAL, #{userNo}, #{itemId}, #{amount})
+		INSERT INTO pay_coin_history(history_no, user_no, item_id, item_name, amount)
+		VALUES(pay_coin_history_seq.NEXTVAL, #{userNo}, #{itemId}, #{itemName}, #{amount})
 	</insert>
 	<!-- 구매 내역 조회 -->
 	<select id="listPayHistory" resultType="PayCoin"> 

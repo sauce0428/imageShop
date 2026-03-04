@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.domain.ChargeCoin;
+import com.project.domain.Member;
 import com.project.domain.PayCoin;
 import com.project.mapper.CoinMapper;
 
@@ -39,8 +40,8 @@ public class CoinServiceImpl implements CoinService {
 	}
 
 	@Override
-	public List<PayCoin> listPayHistory(int userNo) throws Exception {
-		return mapper.listPayHistory(userNo);
+	public List<PayCoin> listPayHistory(Member member) throws Exception {
+		return mapper.listPayHistory(member);
 	}
 
 

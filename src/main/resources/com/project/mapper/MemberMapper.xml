@@ -69,10 +69,10 @@
 		WHERE M.user_id = #{userId}
 	</select>
 
-	<!-- 권한 삭제 -->
-	<insert id="deleteAuth">
-		DELETE FROM member_auth WHERE user_no = #{userNo}
-	</insert>
+	<!-- 회원 코인 조회 -->
+	<select id="getCoin" resultType="int">
+		select coin FROM member WHERE user_no = #{userNo}
+	</select>
 
 	<!-- 수정 처리 -->
 	<update id="modify">
