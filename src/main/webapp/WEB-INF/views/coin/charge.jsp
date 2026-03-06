@@ -20,60 +20,43 @@
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 	<div align="center">
 		<h2>
-			<spring:message code="item.header.read" />
+			<spring:message code="coin.header.chargeCoin" />
 		</h2>
-		<form:form modelAttribute="item" action="/item/buy" method="post">
-			<form:hidden path="itemId" />
-
+		<form:form modelAttribute="chargeCoin" action="charge"
+			enctype="multipart/form-data" method="post">
 			<table>
 				<tr>
-					<td><spring:message code="item.itemName" /></td>
-					<td><form:input path="itemName" readonly="true" /></td>
-					<td><font color="red"><form:errors path="itemName" /></font></td>
-				</tr>
-				<tr>
-					<td><spring:message code="item.itemPrice" /></td>
-					<td><form:input path="price" readonly="true" />&nbsp;원</td>
-					<td><font color="red"><form:errors path="price" /></font></td>
-				</tr>
-				<tr>
-					<td><spring:message code="item.picture" /></td>
-					<td><img src="picture?itemId=${item.itemId}" width="210"></td>
-				</tr>
-				<tr>
-					<td><spring:message code="item.preview" /></td>
-					<td><img src="display?itemId=${item.itemId}" width="210"></td>
-				</tr>
-				<tr>
-					<td><spring:message code="item.itemDescription" /></td>
-					<td><form:textarea path="description" readonly="true" /></td>
-					<td><font color="red"><form:errors path="description" /></font></td>
+					<td><spring:message code="coin.amount" /></td>
+					<td><form:input path="amount" /></td>
+					<td><font color="red"><form:errors path="amount" /></font></td>
 				</tr>
 			</table>
 		</form:form>
+
 		<div>
-			<button type="submit" id="btnBuy">
-				<spring:message code="action.buy" />
-			</button>
+			<sec:authorize access="hasRole('ROLE_MEMBER')">
+				<button type="submit" id="btnCharge">
+					<spring:message code="action.charge" />
+				</button>
+			</sec:authorize>
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
 			</button>
 		</div>
-		</div>
-		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
 		<script>
 			$(document).ready(function() {
-				var formObj = $("#item");
-				$("#btnBuy").on("click", function() {
+				var formObj = $("#chargeCoin");
+
+				$("#btnCharge").on("click", function() {
 					formObj.submit();
 				});
-				$("#btnList").on("click", function() {
-					self.location = "list";
-				});
 
+				$("#btnList").on("click", function() {
+					self.location = "/coin/list";
+				});
 			});
 		</script>
-
 		<script>
 			const starsCount = 300; // 별 수 증가
 			for (let i = 0; i < starsCount; i++) {
@@ -86,6 +69,13 @@
 				star.style.animationDuration = (Math.random() * 3 + 2) + "s";
 				star.style.animationDelay = Math.random() * 5 + "s";
 				document.body.appendChild(star);
+			}
+
+			var result = "${msg}";
+			if (result === "SUCCESS") {
+				alert("<spring:message code='common.processSuccess' />");
+			} else if (result === "FAIL") {
+				alert("삭제처리 실패");
 			}
 		</script>
 </body>

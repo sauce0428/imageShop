@@ -28,4 +28,8 @@ public interface MemberMapper {
 	public int remove(Member member) throws Exception;
 
 	public int countAll() throws Exception;
+	
+	public Member readByNo(String username) throws Exception;
+	
+	public int getCoin(Member member) throws Exception;
 }

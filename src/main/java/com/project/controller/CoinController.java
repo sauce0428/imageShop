@@ -1,0 +1,96 @@
+package com.project.controller;
+
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.project.common.security.domain.CustomUser;
+import com.project.domain.ChargeCoin;
+import com.project.domain.Member;
+import com.project.service.CoinService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Controller
+@Slf4j
+@RequestMapping("/coin")
+public class CoinController {
+	@Autowired
+	private CoinService service;
+
+	// 20장프로젝트-1개요와DB설정(I18nConfiguration.java -10페이지설정되었는지확인할것)
+	@Autowired
+	private MessageSource messageSource;
+
+	// 코인 충전 페이지
+	@GetMapping("/charge")
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	public void chargeForm(Model model) throws Exception {
+		ChargeCoin chargeCoin = new ChargeCoin();
+		chargeCoin.setAmount(1000);
+		model.addAttribute(chargeCoin);
+	}
+
+	// 코인 충전 처리
+	@PostMapping("/charge")
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	public String charge(ChargeCoin chargeCoin, RedirectAttributes rttr, Authentication authentication)
+			throws Exception {
+		CustomUser customUser = (CustomUser) authentication.getPrincipal();
+		Member member = customUser.getMember();
+		int userNo = member.getUserNo();
+
+		chargeCoin.setUserNo(userNo);
+		chargeCoin.setItemName("코인 충전");
+		int count = service.charge(chargeCoin);
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "충전이 완료되었습니다.");
+		} else {
+			rttr.addFlashAttribute("msg", "충전이 실패하였습니다.");
+		}
+		return "redirect:/coin/success";
+	}
+
+	// 코인 충전 성공 페이지
+	@GetMapping("/success")
+	public String success() throws Exception {
+		return "coin/success";
+	}
+
+	// 충전 내역 페이지
+	@GetMapping("/list")
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	public void list(Model model, Authentication authentication) throws Exception {
+		CustomUser customUser = (CustomUser) authentication.getPrincipal();
+		Member member = customUser.getMember();
+
+		int userNo = member.getUserNo();
+		model.addAttribute("list", service.list(userNo));
+	}
+
+	// 사용자 구매 내역 보기 요청을 처리한다.
+	@GetMapping("/listPay")
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	public void listPayHistory(Model model, Authentication authentication) throws Exception {
+		CustomUser customUser = (CustomUser) authentication.getPrincipal();
+		Member member = customUser.getMember();
+
+		model.addAttribute("list", service.listPayHistory(member));
+	}
+
+	// 코인 부족 예외 처리
+	@GetMapping("/notEnoughCoin")
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	public void notEnoughCoin(Model model) throws Exception {
+
+	}
+}

@@ -1,55 +1,76 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> 
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <link rel="stylesheet" href="/css/common.css">
-<div class="menu-bar" align="right"> 
- <table> 
-  <tr> 
-   <td width="20%"><a href="/"><spring:message code="header.home" /></a></td> 
+<div class="menu-bar" align="right">
+	<table>
+		<tr>
+			<td width="20%"><a href="/"><spring:message
+						code="header.home" /></a></td>
 
-   <!-- 인증을 하지 않았을때 메뉴  --> 
-   <sec:authorize access="!isAuthenticated()"> 
-   			<!-- 회원 게시판 리스트 --> 
-            <td width="120"><a href="/board/list">회원게시판</a></td>
-            <!-- 공지사항을 메뉴에 추가한다. --> 
-			<td width="20%"><a href="/notice/list"><spring:message code="menu.notice.member" /></a></td>
-			<!-- 상품 리스트 --> 
-			<td width="50"><a href="/item/list"><spring:message code="menu.item.member" /></a></td>
-   </sec:authorize> 
+			<!-- 인증을 하지 않았을때 메뉴  -->
+			<sec:authorize access="!isAuthenticated()">
+				<!-- 회원 게시판 리스트 -->
+				<td width="120"><a href="/board/list">회원게시판</a></td>
+				<!-- 공지사항을 메뉴에 추가한다. -->
+				<td width="20%"><a href="/notice/list"><spring:message
+							code="menu.notice.member" /></a></td>
+				<!-- 상품 리스트 -->
+				<td width="50"><a href="/item/list"><spring:message
+							code="menu.item.member" /></a></td>
+			</sec:authorize>
 
-   <!-- 인증을 했을때 메뉴(인가: 관리자, 회원, 메니저)  --> 
-   <sec:authorize access="isAuthenticated()">
-           <!-- 인증완료, (인가: 관리자)일때 들어갈 메뉴  --> 
-           <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <!-- 코드그룹관리메뉴 --> 
-               <td width="20%"><a href="/codegroup/list"><spring:message code="menu.codegroup.list" /></a></td> 
-               <!-- 코드관리메뉴 --> 
-               <td width="10%"><a href="/codedetail/list"><spring:message code="menu.codedetail.list" /></a></td>
-                <!-- 회원 관리 메뉴 --> 
-               <td width="20%"><a href="/user/list"><spring:message code="menu.user.admin" /></a></td>
-               <!-- 회원 게시판 리스트 --> 
-               <td width="120"><a href="/board/list">회원게시판</a></td>
-               <!-- 공지사항 --> 
-			   <td width="20%"><a href="/notice/list"><spring:message code="menu.notice.member" /></a></td>
-               <!-- 상품 리스트 --> 
-			   <td width="50"><a href="/item/list"><spring:message code="menu.item.member" /></a></td>
-           </sec:authorize> 
+			<!-- 인증을 했을때 메뉴(인가: 관리자, 회원, 메니저)  -->
+			<sec:authorize access="isAuthenticated()">
+				<!-- 인증완료, (인가: 관리자)일때 들어갈 메뉴  -->
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<!-- 코드그룹관리메뉴 -->
+					<td width="20%"><a href="/codegroup/list"><spring:message
+								code="menu.codegroup.list" /></a></td>
+					<!-- 코드관리메뉴 -->
+					<td width="10%"><a href="/codedetail/list"><spring:message
+								code="menu.codedetail.list" /></a></td>
+					<!-- 회원 관리 메뉴 -->
+					<td width="20%"><a href="/user/list"><spring:message
+								code="menu.user.admin" /></a></td>
+					<!-- 회원 게시판 리스트 -->
+					<td width="120"><a href="/board/list">회원게시판</a></td>
+					<!-- 공지사항 -->
+					<td width="20%"><a href="/notice/list"><spring:message
+								code="menu.notice.member" /></a></td>
+					<!-- 상품 리스트 -->
+					<td width="50"><a href="/item/list"><spring:message
+								code="menu.item.member" /></a></td>
+				</sec:authorize>
 
-           <!-- 인증완료, (인가: 회원)일때 들어갈 메뉴  --> 
-           <sec:authorize access="hasRole('ROLE_MEMBER')">
-           	   <!-- 공지사항을 메뉴에 추가한다. --> 
-			   <td width="120"><a href="/board/register">게시물등록</a></td>
-               <!-- 회원 게시판 리스트 --> 
-               <td width="120"><a href="/board/list">회원게시판</a></td>
-               <!-- 공지사항을 메뉴에 추가한다. --> 
-			   <td width="20%"><a href="/notice/list"><spring:message code="menu.notice.member" /></a></td>
-			   <!-- 상품 리스트 --> 
-			   <td width="50"><a href="/item/list"><spring:message code="menu.item.member" /></a></td>
-           </sec:authorize> 
+				<!-- 인증완료, (인가: 회원)일때 들어갈 메뉴  -->
+				<sec:authorize access="hasRole('ROLE_MEMBER')">
+					<!-- 공지사항을 메뉴에 추가한다. -->
+					<td width="120"><a href="/board/register">게시물등록</a></td>
+					<!-- 회원 게시판 리스트 -->
+					<td width="120"><a href="/board/list">회원게시판</a></td>
+					<!-- 공지사항을 메뉴에 추가한다. -->
+					<td width="20%"><a href="/notice/list"><spring:message
+								code="menu.notice.member" /></a></td>
+					<!-- 상품 리스트 -->
+					<td width="50"><a href="/item/list"><spring:message
+								code="menu.item.member" /></a></td>
+					<!-- 코인 충전과 충전 내역을 메뉴에 추가한다. -->
+					<td width="120"><a href="/coin/charge"><spring:message
+								code="menu.coin.charge" /></a></td>
+					<td width="120"><a href="/coin/list"><spring:message
+								code="menu.coin.list" /></a></td>
+					<!-- 구매 상품과 구매 내역을 메뉴에 추가한다. -->
+					<td width="120"><a href="/useritem/list"><spring:message
+								code="menu.useritem.list" /></a></td>
+					<td width="120"><a href="/coin/listPay"><spring:message
+								code="menu.coin.listPay" /></a></td>
+				</sec:authorize>
 
-   </sec:authorize> 
-  </tr> 
- </table>
- </div>
- <hr>
+			</sec:authorize>
+		</tr>
+	</table>
+</div>
+<hr>

@@ -20,20 +20,23 @@
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 	<div align="center">
 		<h2>
-			<spring:message code="item.header.read" />
+			<spring:message code="item.header.modify" />
 		</h2>
-		<form:form modelAttribute="item" action="/item/buy" method="post">
+		<form:form modelAttribute="item" action="/item/modify"
+			enctype="multipart/form-data">
 			<form:hidden path="itemId" />
+			<form:hidden path="pictureUrl" />
+			<form:hidden path="previewUrl" />
 
 			<table>
 				<tr>
 					<td><spring:message code="item.itemName" /></td>
-					<td><form:input path="itemName" readonly="true" /></td>
+					<td><form:input path="itemName" /></td>
 					<td><font color="red"><form:errors path="itemName" /></font></td>
 				</tr>
 				<tr>
 					<td><spring:message code="item.itemPrice" /></td>
-					<td><form:input path="price" readonly="true" />&nbsp;원</td>
+					<td><form:input path="price" />&nbsp;원</td>
 					<td><font color="red"><form:errors path="price" /></font></td>
 				</tr>
 				<tr>
@@ -45,16 +48,28 @@
 					<td><img src="display?itemId=${item.itemId}" width="210"></td>
 				</tr>
 				<tr>
+					<td><spring:message code="item.itemFile" /></td>
+					<td><input type="file" name="picture" /></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><spring:message code="item.itemPreviewFile" /></td>
+					<td><input type="file" name="preview" /></td>
+					<td></td>
+				</tr>
+				<tr>
 					<td><spring:message code="item.itemDescription" /></td>
-					<td><form:textarea path="description" readonly="true" /></td>
+					<td><form:textarea path="description" /></td>
 					<td><font color="red"><form:errors path="description" /></font></td>
 				</tr>
 			</table>
 		</form:form>
 		<div>
-			<button type="submit" id="btnBuy">
-				<spring:message code="action.buy" />
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<button type="submit" id="btnModify">
+				<spring:message code="action.modify" />
 			</button>
+			</sec:authorize>
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
 			</button>
@@ -64,9 +79,10 @@
 		<script>
 			$(document).ready(function() {
 				var formObj = $("#item");
-				$("#btnBuy").on("click", function() {
+				$("#btnModify").on("click", function() {
 					formObj.submit();
 				});
+
 				$("#btnList").on("click", function() {
 					self.location = "list";
 				});

@@ -9,11 +9,13 @@ import java.util.UUID;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -24,8 +26,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.project.common.security.domain.CustomUser;
 import com.project.domain.Item;
+import com.project.domain.Member;
 import com.project.service.ItemService;
+import com.project.service.MemberService;
+import com.project.service.UserItemService;
 
 @Controller
 @RequestMapping("/item")
@@ -33,6 +39,17 @@ public class ItemController {
 
 	@Autowired
 	private ItemService itemService;
+
+	// 업무로직을 처리할 서비스 객체를 필드로 선언한다.
+	// 회원정보 관리서비스
+	@Autowired
+	private MemberService memberService;
+	@Autowired
+	private UserItemService userItemService;
+
+	// 메시지를 처리할 MessageSource를 필드로 선언한다.
+	@Autowired
+	private MessageSource messageSource;
 
 	@Value("${upload.path}")
 	private String uploadPath;
@@ -167,13 +184,128 @@ public class ItemController {
 		return entity;
 	}
 
+	// 상품 구매 요청을 처리한다.
+	@PostMapping("/buy")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')")
+	public String buy(Item item, RedirectAttributes rttr, Authentication authentication) throws Exception {
+		//인증된 사용자 정보를 가져오고 
+		CustomUser customUser = (CustomUser) authentication.getPrincipal();
+		Member member = customUser.getMember();
+		
+		//해당되는 회원코인정보를 가져와서 저장한다.
+		member.setCoin(memberService.getCoin(member));
+
+		Item _item = itemService.read(item);
+		
+		//장바구니생성
+		int count = userItemService.register(member, item);
+		
+		//String message = messageSource.getMessage("item.purchaseComplete", null, Locale.KOREAN);
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "구매 완료");
+		} else {
+			rttr.addFlashAttribute("msg", "구매 실패");
+		}
+		return "redirect:/item/success";
+	}
+	
+	// 상품 구매 성공 페이지를 표시한다. 
+	@GetMapping("/success") 
+	public String success() throws Exception { 
+	return "item/success"; 
+	}
+
 	// 상품 수정 페이지
 	@GetMapping("/modify")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String modifyForm(Item item, Model model) throws Exception {
-		
+
 		model.addAttribute(itemService.read(item));
 
 		return "item/modify";
+	}
+
+	// 상품 수정 처리
+	@PostMapping("/modify")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String modify(Item item, RedirectAttributes rttr) throws Exception {
+		MultipartFile pictureFile = item.getPicture();
+		if (pictureFile != null && pictureFile.getSize() > 0) {
+			String createdFilename = uploadFile(pictureFile.getOriginalFilename(), pictureFile.getBytes());
+			// 기존의 이지지파일 삭제
+			Item item2 = itemService.read(item);
+			String pictureUrl = item2.getPictureUrl();
+			File _pictureFile = new File(uploadPath, pictureUrl);
+			_pictureFile.delete();
+
+			item.setPictureUrl(createdFilename);
+		}
+
+		MultipartFile previewFile = item.getPreview();
+		if (previewFile != null && previewFile.getSize() > 0) {
+			String createdFilename = uploadFile(previewFile.getOriginalFilename(), previewFile.getBytes());
+			// 기존의 프리뷰 파일 삭제
+			Item item2 = itemService.read(item);
+			String previewUrl = item2.getPreviewUrl();
+			File _previewFile = new File(uploadPath, previewUrl);
+			_previewFile.delete();
+			item.setPreviewUrl(createdFilename);
+		}
+		int count = itemService.modify(item);
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "SUCCESS");
+		} else {
+			rttr.addFlashAttribute("msg", "FAIL");
+		}
+		return "redirect:/item/list";
+	}
+
+	// 상품 삭제화면요청
+	@GetMapping("/remove")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String removeForm(Item item, Model model) throws Exception {
+		Item _item = itemService.read(item);
+		model.addAttribute(_item);
+		return "item/remove";
+	}
+
+	// 상품 삭제 처리
+	@PostMapping("/remove")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String remove(Item item, RedirectAttributes rttr) throws Exception {
+		// 외장하드에 있는 상품이미지를 제거
+		Item _item = itemService.read(item);
+		String pictureUrl = _item.getPictureUrl();
+		String previewUrl = _item.getPreviewUrl();
+		if (pictureUrl != null && pictureUrl.length() > 0) {
+			File _pictureFile = new File(uploadPath, pictureUrl);
+			_pictureFile.delete();
+		}
+
+		if (previewUrl != null && previewUrl.length() > 0) {
+			File _previewFile = new File(uploadPath, previewUrl);
+			_previewFile.delete();
+		}
+
+		// item 상품테이블에서 삭제처리
+		int count = itemService.remove(item);
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "SUCCESS");
+		} else {
+			rttr.addFlashAttribute("msg", "FAIL");
+		}
+		return "redirect:/item/list";
+	}
+
+	// 상품 상세 페이지
+	@GetMapping("/read")
+	public String read(Item item, Model model) throws Exception {
+		Item _item = itemService.read(item);
+		if (item != null) {
+			model.addAttribute("item", _item);
+		} else {
+			throw new Exception("에러발생");
+		}
+		return "item/read";
 	}
 }

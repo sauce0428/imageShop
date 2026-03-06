@@ -22,7 +22,7 @@
 		<h2>
 			<spring:message code="item.header.read" />
 		</h2>
-		<form:form modelAttribute="item" action="/item/buy" method="post">
+		<form:form modelAttribute="item">
 			<form:hidden path="itemId" />
 
 			<table>
@@ -52,9 +52,6 @@
 			</table>
 		</form:form>
 		<div>
-			<button type="submit" id="btnBuy">
-				<spring:message code="action.buy" />
-			</button>
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
 			</button>
@@ -64,9 +61,6 @@
 		<script>
 			$(document).ready(function() {
 				var formObj = $("#item");
-				$("#btnBuy").on("click", function() {
-					formObj.submit();
-				});
 				$("#btnList").on("click", function() {
 					self.location = "list";
 				});
